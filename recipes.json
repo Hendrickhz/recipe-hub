@@ -1,0 +1,82 @@
+{
+  "title": "Braised Lamb Stew",
+  "tags": ["lamb", "pressure cooker", "slow cook"],
+  "description": "This is absolutely one of my favourite winter dishes, the Middle-Eastern style spices combined with the dates give it a warmth and depth that is just SO good. After 8 hours the lamb shoulder is so tender it just melts in your mouth – but it also translates really well into a pressure cooker (see notes below). The addition of the dates gives it a bit of sweetness to combat the acidic wine and tomatoes, it ends up like a hug in a bowl. Freezes well, is naturally gluten and dairy free.",
+  "servings": 6,
+  "prepTime": 15,
+  "cookTime": 480,
+  "totalTime": 495,
+  "cuisine": "Middle Eastern",
+  "course": "Dinner, Lunch",
+  "equipment": ["Slow Cooker or Pressure Cooker", "Large frying pan"],
+  "ingredients": [
+    { "name": "boneless lamb shoulder", "quantity": "1.5-2 kg" },
+    { "name": "large onion", "quantity": "1, diced finely" },
+    { "name": "cloves of garlic", "quantity": "3, minced" },
+    { "name": "carrots", "quantity": "2, diced" },
+    { "name": "celery stick", "quantity": "1, diced finely" },
+    { "name": "large zucchini", "quantity": "2, diced" },
+    {
+      "name": "punnet of cherry tomatoes or can of cherry tomatoes in tomato juice",
+      "quantity": "1"
+    },
+    {
+      "name": "large white washed potatoes",
+      "quantity": "3, cut into quarters"
+    },
+    {
+      "name": "kale leaves (or handful of baby spinach leaves)",
+      "quantity": "2, chopped finely"
+    },
+    { "name": "dried brown lentils", "quantity": "1 cup, rinsed or soaked" },
+    { "name": "dried dates", "quantity": "1/2 cup" },
+    { "name": "sprigs of rosemary", "quantity": "2, chopped finely" },
+    { "name": "sumac", "quantity": "1 tsp" },
+    { "name": "smokey paprika", "quantity": "1 tsp" },
+    { "name": "cumin", "quantity": "1 tsp" },
+    { "name": "allspice", "quantity": "1 tsp" },
+    { "name": "cinnamon", "quantity": "1/2 tsp" },
+    { "name": "red wine", "quantity": "1 cup" },
+    { "name": "beef bone broth", "quantity": "2 cups" },
+    { "name": "Salt and pepper to taste", "quantity": "" },
+    { "name": "Olive oil or ghee for browning", "quantity": "" }
+  ],
+  "instructions": [
+    {
+      "step": 1,
+      "instruction": "Prepare all of your ingredients by dicing the onion, carrots, celery, and zucchini into 1-2cm cubes. Cut the potatoes into quarters, rinse the dried brown lentils, chop the rosemary finely, and chop the kale."
+    },
+    {
+      "step": 2,
+      "instruction": "Heat a large pan (or a searing friendly instant pot/slow cooker) over medium-high heat and add a splash of olive oil. Season the lamb well all over with salt and pepper, then brown it on all sides until a golden crust forms, about 5 minutes. If you are using a slow cooker – transfer the lamb into it, or if you are searing in a slow/pressure cooker, simply it put aside."
+    },
+    {
+      "step": 3,
+      "instruction": "In the same pan, add the diced onion, carrots, celery, and minced garlic. Sauté for about 5 minutes, until they begin to soften and the onion becomes translucent."
+    },
+    {
+      "step": 4,
+      "instruction": "Then add the sumac, smoked paprika, cumin, allspice, and cinnamon to the pan/pot. Stir well to coat the vegetables with the spices and cook for another minute or so until fragrant."
+    },
+    {
+      "step": 5,
+      "instruction": "Pour in the red wine to deglaze and let it simmer for 2-3 minutes so it will reduce slightly."
+    },
+    {
+      "step": 6,
+      "instruction": "If using a slow cooker, transfer the sautéed vegetables and wine mixture to the slow cooker with the lamb. Then add everything else – the diced zucchini, cherry tomatoes, potatoes, kale/spinach, lentils, and dates. Pour in the beef bone broth and stir well to combine."
+    },
+    {
+      "step": 7,
+      "instruction": "Cover the slow cooker and cook on low for 8 hours, or until the lamb is tender and falling apart and the vegetables are cooked through."
+    },
+    {
+      "step": 8,
+      "instruction": "Taste and adjust seasoning with additional salt and pepper if needed. Serve the braised lamb shoulder casserole hot, with crusty bread for dipping."
+    }
+  ],
+  "thumbnailUrl": "/a-1.png",
+  "detailImageUrl": "/a-2.png",
+  "notes": "Prep Note: if you can pre-soak your lentils for at least a few hours (or overnight), it will help them break down and is easier on your digestion. PRESSURE COOKING NOTES If you are pressure cooking this you will need to either score or cut your lamb into chunks rather than 1 large slab of meat, to ensure that it is tender and falling apart. It will ideally need at least 15 minutes of natural pressure release.",
+  "author": "1"
+}
