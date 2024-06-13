@@ -13,6 +13,7 @@
     "@chakra-ui/react": "^2.8.2",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
+    "@hookform/resolvers": "^3.6.0",
     "cloudinary": "^2.2.0",
     "framer-motion": "^11.2.10",
     "mongodb": "^6.7.0",
@@ -22,11 +23,14 @@
     "photoswipe": "^5.4.4",
     "react": "^18",
     "react-dom": "^18",
+    "react-hook-form": "^7.51.5",
     "react-icons": "^5.2.1",
+    "react-loading-skeleton": "^3.4.0",
     "react-photoswipe-gallery": "^3.0.1",
     "react-share": "^5.1.0",
     "react-spinners": "^0.13.8",
-    "react-toastify": "^10.0.5"
+    "react-toastify": "^10.0.5",
+    "yup": "^1.4.0"
   },
   "devDependencies": {
     "@types/node": "^20",
