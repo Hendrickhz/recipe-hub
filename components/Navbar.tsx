@@ -24,7 +24,7 @@ const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   console.log(pathname);
   return (
-    <nav className="  bg-orange-50 py-3">
+    <nav className="  bg-orange-100 py-3">
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
         <Box className=" px-4 py-2  container">
           <Flex align="center">

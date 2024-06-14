@@ -64,7 +64,7 @@ const RecipeSchema: Schema = new Schema(
     prepTime: { type: Number, required: true },
     cookTime: { type: Number, required: true },
     totalTime: { type: Number, required: true },
-    cuisine: { type: Number, required: true },
+    cuisine: { type: String, required: true },
     course: { type: String, required: true },
     equipment: { type: [String], required: true },
     ingredients: { type: [IngredientSchema], required: true },

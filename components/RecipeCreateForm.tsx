@@ -22,6 +22,8 @@ import { AddIcon, DeleteIcon } from "@chakra-ui/icons";
 import { useForm, Controller, useFieldArray } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
+import { toast } from "react-toastify";
+import { useState } from "react";
 
 // Define the form data types
 interface Ingredient {
@@ -84,6 +86,7 @@ const validationSchema = Yup.object().shape({
 });
 
 const RecipeCreateForm = () => {
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const {
     control,
     handleSubmit,
@@ -128,13 +131,76 @@ const RecipeCreateForm = () => {
     name: "instructions",
   });
 
-  const onSubmit = (data: RecipeFormData) => {
-    console.log(data);
+  const onSubmit = async (data: RecipeFormData) => {
     // handle form submission
+    setIsSubmitting(true);
+    const formData = new FormData();
+
+    // Append non-file fields
+    formData.append("title", data.title);
+    formData.append("tags", data.tags);
+    formData.append("description", data.description);
+    formData.append("servings", data.servings.toString());
+    formData.append("prepTime", data.prepTime.toString());
+    formData.append("cookTime", data.cookTime.toString());
+    formData.append("cuisine", data.cuisine);
+    formData.append("course", data.course);
+    formData.append("equipment", data.equipment);
+
+    // Append JSON stringified ingredients and instructions
+    formData.append("ingredients", JSON.stringify(data.ingredients));
+    formData.append("instructions", JSON.stringify(data.instructions));
+
+    // Append file fields (thumbnail and detailImage)
+    if (data.thumbnail && data.thumbnail.length > 0) {
+      formData.append("thumbnail", data.thumbnail[0]);
+    }
+    if (data.detailImage && data.detailImage.length > 0) {
+      formData.append("detailImage", data.detailImage[0]);
+    }
+
+    // Append optional fields
+    if (data.notes) {
+      formData.append("notes", data.notes);
+    }
+    const loadingToastId = toast.loading("Creating a recipe...");
+    try {
+      console.log(formData);
+
+      const res = await fetch("/api/recipes", {
+        method: "POST",
+        body: formData,
+      });
+      // Example: Send the form data to an API endpoint
+      if (res.status == 200 || res.status == 201) {
+        toast.update(loadingToastId, {
+          render: "The recipe is created successfully",
+          type: "success",
+          isLoading: false,
+          autoClose: 3000,
+        });
+      } else {
+        toast.update(loadingToastId, {
+          render: "Failed to create the recipe",
+          type: "error",
+          isLoading: false,
+          autoClose: 3000,
+        });
+      }
+    } catch (error) {
+      toast.update(loadingToastId, {
+        render: "Failed to create the recipe",
+        type: "error",
+        isLoading: false,
+        autoClose: 3000,
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
-    <Box p={5} shadow="md" borderWidth="1px" borderRadius={"8px"} my={4}>
+    <Box p={5} shadow="md" borderRadius={"8px"} my={4}>
       <form onSubmit={handleSubmit(onSubmit)}>
         <VStack spacing={4}>
           <FormControl isInvalid={!!errors.title}>
@@ -367,7 +433,7 @@ const RecipeCreateForm = () => {
             {instructionFields.map((item, index) => (
               <Box key={item.id}>
                 {" "}
-                <Box display="flex" alignItems="center" mt={index > 0 ? 4 : 0}>
+                <Box display="flex" alignItems={"start"} mt={index > 0 ? 4 : 0}>
                   <FormLabel>{index + 1} </FormLabel>
                   <Controller
                     name={`instructions.${index}.instruction`}
@@ -377,7 +443,6 @@ const RecipeCreateForm = () => {
                     )}
                   />
                   <IconButton
-                    size={"sm"}
                     aria-label="Remove instruction"
                     icon={<DeleteIcon />}
                     onClick={() => removeInstruction(index)}
@@ -389,7 +454,6 @@ const RecipeCreateForm = () => {
                   </FormErrorMessage>
                 )}
               </Box>
-
             ))}
             <Box className="my-3">
               <Button
@@ -458,7 +522,13 @@ const RecipeCreateForm = () => {
             )}
           </FormControl>
 
-          <Button type="submit" colorScheme="teal">
+          <Button
+            isLoading={isSubmitting}
+            loadingText="Submitting"
+            type="submit"
+            colorScheme="orange"
+            size={"lg"}
+          >
             Submit Recipe
           </Button>
         </VStack>
