@@ -17,12 +17,34 @@ import { ChevronDownIcon } from "@chakra-ui/icons";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaGoogle } from "react-icons/fa";
+import profileDefault from "@/assets/images/user.png";
+import {
+  signIn,
+  signOut,
+  getProviders,
+  useSession,
+  ClientSafeProvider,
+} from "next-auth/react";
 const Navbar = () => {
+  const { data: session } = useSession();
   const pathname = usePathname();
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  console.log(pathname);
+  const [providers, setProviders] = useState<Record<
+    string,
+    ClientSafeProvider
+  > | null>(null);
+  console.log(providers);
+  useEffect(() => {
+    const fetchProviders = async () => {
+      const res = await getProviders();
+      if (!res) {
+        return;
+      }
+      setProviders(res);
+    };
+    fetchProviders();
+  }, []);
   return (
     <nav className="  bg-orange-100 py-3">
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
@@ -73,23 +95,16 @@ const Navbar = () => {
 
             {/* Right side: Profile dropdown menu and Sign-in button */}
             <Flex align="center" className="space-x-4">
-              {isLoggedIn ? (
+              {session ? (
                 <Menu>
-                  <MenuButton
-                    as={Button}
-                    rightIcon={<ChevronDownIcon />}
-                    className="bg-gray-800 text-white hover:bg-gray-700"
-                    size={{ base: "sm", md: "md" }} // Small size on mobile, medium on larger screens
-                    px={{ base: 2, md: 4 }} // Adjust padding
-                    py={{ base: 1, md: 2 }} // Adjust padding
-                  >
-                    <Avatar
-                      size={{ base: "xs", md: "sm" }}
-                      name="Profile"
-                      src="/profile.jpg"
-                      className="mr-2"
-                    />
-                  </MenuButton>
+                  <Avatar
+                    as={MenuButton}
+                    size={{ base: "sm", md: "md" }}
+                    name={session?.user?.name || "user "}
+                    src={session?.user?.image || profileDefault}
+                    className="mr-2"
+                  />
+
                   <MenuList>
                     <MenuItem>
                       <Link href="/profile">Profile</Link>
@@ -98,20 +113,29 @@ const Navbar = () => {
                       <Link href="/saved">Saved</Link>
                     </MenuItem>
                     <MenuItem>
-                      <Link href="/logout">Logout</Link>
+                      <Link href="#" onClick={() => signOut()}>
+                        Logout
+                      </Link>
                     </MenuItem>
                   </MenuList>
                 </Menu>
               ) : (
-                <Button
-                  colorScheme="orange"
-                  leftIcon={<FaGoogle />}
-                  size={{ base: "sm", md: "md" }} // Small size on mobile, medium on larger screens
-                  px={{ base: 2, md: 4 }} // Adjust padding
-                  py={{ base: 1, md: 2 }} // Adjust padding
-                >
-                  Sign In
-                </Button>
+                <>
+                  {providers &&
+                    Object.values(providers).map((provider, index) => (
+                      <Button
+                        key={index}
+                        onClick={() => signIn(provider.id)}
+                        colorScheme="orange"
+                        leftIcon={<FaGoogle />}
+                        size={{ base: "sm", md: "md" }}
+                        px={{ base: 2, md: 4 }}
+                        py={{ base: 1, md: 2 }}
+                      >
+                        Sign In
+                      </Button>
+                    ))}
+                </>
               )}
             </Flex>
           </Flex>
