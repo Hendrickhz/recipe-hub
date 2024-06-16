@@ -12,7 +12,7 @@ const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
       shadow="md"
       maxW={{ base: "90%", md: "sm" }}
       mx="auto"
-      minW="360px"
+      w="360px"
     >
       <Image
         src={recipe.thumbnailUrl}
@@ -23,13 +23,13 @@ const RecipeCard = ({ recipe }: { recipe: Recipe }) => {
       />
 
       <Box p={6} bg="orange.500" color="white">
-        <Text fontSize="2xl" fontWeight="bold">
+        <Text fontSize="2xl" fontWeight="bold" fontFamily={'serif'}>
           <Link href={`/recipes/${recipe._id}`}> {recipe.title}</Link>
         </Text>
-        <div className=" flex flex-wrap items-center gap-2">
+        <div className=" flex flex-wrap items-center gap-2 mt-3">
           <FaTags />
           {recipe.tags.map((tag, index) => (
-            <span key={index}>{tag}</span>
+            <Text className=" uppercase text-xs" fontFamily={'serif'}  key={index}>{tag}</Text>
           ))}
         </div>
       </Box>

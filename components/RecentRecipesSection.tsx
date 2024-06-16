@@ -1,4 +1,4 @@
-"use client";
+// "use client";
 import {
   Box,
   Button,
@@ -12,26 +12,28 @@ import React, { useEffect, useState } from "react";
 import RecipeCard from "./RecipeCard";
 import { Recipe } from "@/interfaces";
 import RecipeCardSkeleton from "./RecipeCardSkeleton";
+import { fetchRecentRecipes } from "@/utils/requests";
 
-const RecentRecipesSection = () => {
-  const [recentRecipes, setRecentRecipes] = useState([]);
-  const [loading, setLoading] = useState(true);
-  useEffect(() => {
-    const fetchRecentRecipes = async () => {
-      try {
-        const res = await fetch(`/api/recipes?recent=true`);
-        if (res.status == 200) {
-          const data = await res.json();
-          setRecentRecipes(data);
-        }
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchRecentRecipes();
-  }, []);
+const RecentRecipesSection = async () => {
+  // const [recentRecipes, setRecentRecipes] = useState([]);
+  // const [loading, setLoading] = useState(true);
+  // useEffect(() => {
+  //   const fetchRecentRecipes = async () => {
+  //     try {
+  //       const res = await fetch(`/api/recipes?recent=true`);
+  //       if (res.status == 200) {
+  //         const data = await res.json();
+  //         setRecentRecipes(data);
+  //       }
+  //     } catch (error) {
+  //       console.log(error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+  //   fetchRecentRecipes();
+  // }, []);
+  const recentRecipes = await fetchRecentRecipes();
 
   return (
     <Box
@@ -49,22 +51,10 @@ const RecentRecipesSection = () => {
           recipes are sure to inspire your next meal.
         </Text>
       </VStack>
-      <SimpleGrid columns={{ base: 1, md: 3 }} spacing={8}>
-        {loading ? (
-          <>
-            {" "}
-            {[0, 1, 2].map((item) => (
-              <RecipeCardSkeleton key={item} />
-            ))}
-          </>
-        ) : (
-          <>
-            {" "}
+      <SimpleGrid columns={{ base: 1, md: 2,lg:3 }} spacing={8}>
             {recentRecipes.map((recipe: Recipe) => (
               <RecipeCard key={recipe._id} recipe={recipe} />
             ))}
-          </>
-        )}
       </SimpleGrid>
       <div className="mt-6 mx-auto w-full flex justify-center">
         {" "}

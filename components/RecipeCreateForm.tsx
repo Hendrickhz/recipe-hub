@@ -24,6 +24,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { toast } from "react-toastify";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 
 // Define the form data types
 interface Ingredient {
@@ -86,6 +87,7 @@ const validationSchema = Yup.object().shape({
 });
 
 const RecipeCreateForm = () => {
+  const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const {
     control,
@@ -179,6 +181,12 @@ const RecipeCreateForm = () => {
           isLoading: false,
           autoClose: 3000,
         });
+        const data = await res.json();
+        console.log(data)
+        const {id} = data;
+        setTimeout(() => {
+          router.push(`/recipes/${id}`);
+        }, 300);
       } else {
         toast.update(loadingToastId, {
           render: "Failed to create the recipe",
@@ -344,8 +352,7 @@ const RecipeCreateForm = () => {
               render={({ field }) => (
                 <Select placeholder="Select course" {...field}>
                   <option>Breakfast</option>
-                  <option>Lunch</option>
-                  <option>Dinner</option>
+                  <option>Lunch, Dinner</option>
                   <option>Snack</option>
                   <option>Dessert</option>
                 </Select>

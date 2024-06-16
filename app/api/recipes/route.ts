@@ -2,6 +2,7 @@ import connectDB from "@/config/database";
 import Recipe from "@/models/Recipe";
 import cloudinary from "@/config/cloudinary";
 import mongoose from "mongoose";
+import { getSessionUser } from "@/utils/getSessionUser";
 
 // interface IRecipeData {
 //   title: string | undefined;
@@ -45,11 +46,18 @@ export const GET = async (request: Request) => {
 
 export const POST = async (request: Request) => {
   try {
+    await connectDB();
+
+    const session = await getSessionUser();
+    if (!session || !session.userId) {
+      return new Response("Authentication Required.", { status: 401 });
+    }
+    const userId = session.userId;
     const formData = await request.formData();
     if (!formData) {
       return new Response("Bad Request.", { status: 400 });
     }
-    await connectDB();
+
     const ingredients = JSON.parse(formData.get("ingredients")!.toString());
     const instructions = JSON.parse(formData.get("instructions")!.toString());
     const prepTime = parseInt(formData.get("prepTime")!.toString(), 10);
@@ -72,17 +80,16 @@ export const POST = async (request: Request) => {
       notes: formData.get("notes")?.toString() || "",
       thumbnailUrl: "/a-1.png",
       detailImageUrl: "/a-1.png",
-      author: new mongoose.Types.ObjectId(), // Mock ObjectId for testing
+      author: userId,
     };
 
     const newRecipe = new Recipe(recipeData);
     await newRecipe.save();
 
     // Return response immediately after saving the recipe
-    const response = new Response(
-      JSON.stringify("Recipe submitted successfully"),
-      { status: 201 }
-    );
+    const response = new Response(JSON.stringify({ id: newRecipe._id }), {
+      status: 201,
+    });
 
     // Upload images to Cloudinary in the background
     (async () => {
