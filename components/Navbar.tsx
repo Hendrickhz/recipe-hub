@@ -75,7 +75,7 @@ const Navbar = () => {
             <Flex className="space-x-6">
               <Link
                 href="/"
-                className={`px-3 py-2 rounded-md md:text-lg text-sm text-orange-800 hover:text-orange-600  ${
+                className={`px-3 py-2 rounded-md md:text-lg  text-orange-800 hover:text-orange-600  ${
                   pathname === "/" ? "font-semibold " : ""
                 }`}
               >
@@ -83,7 +83,7 @@ const Navbar = () => {
               </Link>
               <Link
                 href="/recipes"
-                className={`px-3 py-2 rounded-md md:text-lg text-sm text-orange-800 hover:text-orange-600  ${
+                className={`px-3 py-2 rounded-md md:text-lg  text-orange-800 hover:text-orange-600  ${
                   pathname === "/recipes" ? "font-semibold " : ""
                 }`}
               >

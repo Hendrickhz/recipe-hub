@@ -28,9 +28,20 @@ export const GET = async (request: Request) => {
     await connectDB();
     const url = new URL(request.url);
     const recent = url.searchParams.get("recent");
+    const course = url.searchParams.get("course");
     let recipes;
+    let query;
+    if (course && course !== "All") {
+      if (course == "Lunch" || course == "Dinner") {
+        query = { course: "Lunch, Dinner" };
+      } else {
+        query = { course: course };
+      }
+    }
     if (recent) {
       recipes = await Recipe.find().sort({ createdAt: -1 }).limit(3);
+    } else if (query) {
+      recipes = await Recipe.find(query);
     } else {
       recipes = await Recipe.find();
     }

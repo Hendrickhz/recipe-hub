@@ -60,7 +60,7 @@ const RecentRecipesSection = async () => {
         {" "}
         <Button
           as={Link}
-          href="/recipes/create"
+          href="/recipes"
           size="md"
           colorScheme="orange"
           sx={{ textDecoration: "none" }}
