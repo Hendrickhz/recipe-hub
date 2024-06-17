@@ -48,28 +48,16 @@ export const DELETE = async (
       return new Response("Unauthorized", { status: 403 });
     }
 
- 
-     // Delete images from Cloudinary
-     const imageUrls = [recipe.thumbnailUrl, recipe.detailImageUrl];
-     for (const imageUrl of imageUrls) {
-       if (!imageUrl) continue;
-       const publicId = imageUrl.split("/").pop().split(".")[0]; // Extract public_id from URL
-       // Debug: Log public ID
-       console.log("Deleting image with publicId:", publicId);
- 
-       await new Promise<void>((resolve, reject) => {
-         cloudinary.uploader.destroy(publicId, (error: CloudinaryDeleteError, result: CloudinaryDeleteResult) => {
-           if (error) {
-             console.error(`Failed to delete image ${publicId} from Cloudinary:`, error);
-             reject(new Response("Failed to delete image from Cloudinary.", { status: 500 }));
-           } else {
-             // Debug: Log Cloudinary response
-             console.log(`Deleted image ${publicId} from Cloudinary:`, result);
-             resolve();
-           }
-         });
-       });
-     }
+    // Delete images from Cloudinary
+
+    const thumbnailUrlPublicId = `thumbnail_imgs/${
+      recipe.thumbnailUrl.split("/").pop().split(".")[0]
+    }`;
+    const detailImageUrlPublicId = `detail_imgs/${
+      recipe.detailImageUrl.split("/").pop().split(".")[0]
+    }`;
+    deleteImageFromCloudinary(thumbnailUrlPublicId);
+    deleteImageFromCloudinary(detailImageUrlPublicId);
     await recipe.deleteOne(_id);
     return new Response("Recipe is deleted successfully.", { status: 200 });
   } catch (error) {
@@ -77,3 +65,28 @@ export const DELETE = async (
     return new Response("Something went wrong.", { status: 500 });
   }
 };
+
+async function deleteImageFromCloudinary(publicId: string) {
+  await new Promise<void>((resolve, reject) => {
+    cloudinary.uploader.destroy(
+      publicId,
+      (error: CloudinaryDeleteError, result: CloudinaryDeleteResult) => {
+        if (error) {
+          console.error(
+            `Failed to delete image ${publicId} from Cloudinary:`,
+            error
+          );
+          reject(
+            new Response("Failed to delete image from Cloudinary.", {
+              status: 500,
+            })
+          );
+        } else {
+          // Debug: Log Cloudinary response
+          console.log(`Deleted image ${publicId} from Cloudinary:`, result);
+          resolve();
+        }
+      }
+    );
+  });
+}
