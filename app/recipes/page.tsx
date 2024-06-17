@@ -1,4 +1,5 @@
 "use client";
+import NoRecipesAvailable from "@/components/NoRecipesAvailable";
 import RecipeCard from "@/components/RecipeCard";
 import RecipeCardSkeleton from "@/components/RecipeCardSkeleton";
 import { Recipe } from "@/interfaces";
@@ -16,7 +17,6 @@ const RecipePage = () => {
   const [recipes, setRecipes] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedCourse, setSelectedCourse] = useState("");
-  console.log(recipes);
   useEffect(() => {
     const fetchRecipes = async () => {
       setLoading(true);
@@ -127,18 +127,7 @@ const RecipePage = () => {
               ))}
             </div>
           ) : (
-            <Flex
-              textAlign={"center"}
-              direction={"column"}
-              justifyContent={"center"}
-              w={"full"}
-            >
-              <Box>
-                <Image alt="no-found" src="/folder.png" w={32} mx={"auto"} />
-              </Box>
-              <Heading as={"h6"}>No Recipe Available</Heading>
-              <Text>Currently, there are no recipes available.</Text>
-            </Flex>
+           <NoRecipesAvailable/>
           )}
         </>
       )}

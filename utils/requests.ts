@@ -65,4 +65,20 @@ async function fetchRecipe(id: string) {
     return null;
   }
 }
-export { fetchRecipes, fetchRecipe, fetchRecentRecipes, fetchPopularRecipes };
+
+async function fetchRecipesByTag(tag: string) {
+  try {
+    if (!apiDomain) {
+      return [];
+    }
+    const res = await fetch(`${apiDomain}/recipes/tags/${tag}`,{cache:'no-cache'});
+    if (!res.ok) {
+      throw new Error("Failed to Fetch Recipes by tag.");
+    }
+    return res.json();
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
+}
+export { fetchRecipes, fetchRecipe, fetchRecentRecipes, fetchPopularRecipes, fetchRecipesByTag };

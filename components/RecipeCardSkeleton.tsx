@@ -1,7 +1,6 @@
 import React from "react";
 import Skeleton from "react-loading-skeleton";
-import { Box, Flex, Image, Text } from "@chakra-ui/react";
-import { FaTags } from "react-icons/fa";
+import { Box, Text } from "@chakra-ui/react";
 
 const RecipeCardSkeleton = () => (
   <Box

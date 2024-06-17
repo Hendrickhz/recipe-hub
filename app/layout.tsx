@@ -27,7 +27,7 @@ export default function RootLayout({ children }: Readonly<LayoutProps>) {
         <head>
           <link rel="icon" href="/logo.png" type="image/x-icon" />
         </head>
-        <body className=" bg-orange-50">
+        <body className=" bg-orange-50 flex flex-col min-h-screen">
           <ChakraProvider>
             <Box>
               <Navbar />

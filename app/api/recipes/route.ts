@@ -77,7 +77,11 @@ export const POST = async (request: Request) => {
 
     const recipeData = {
       title: formData.get("title")!.toString(),
-      tags: formData.get("tags")!.toString().split(","),
+      tags: formData
+        .get("tags")!
+        .toString()
+        .split(", ")
+        .map((tag) => tag.trim()),
       description: formData.get("description")!.toString(),
       servings: parseInt(formData.get("servings")!.toString(), 10),
       prepTime,
@@ -159,3 +163,4 @@ export const POST = async (request: Request) => {
     return new Response("Something went wrong.", { status: 500 });
   }
 };
+

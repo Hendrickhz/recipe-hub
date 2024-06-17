@@ -34,7 +34,6 @@ const Navbar = () => {
     string,
     ClientSafeProvider
   > | null>(null);
-  console.log(providers);
   useEffect(() => {
     const fetchProviders = async () => {
       const res = await getProviders();
@@ -55,8 +54,9 @@ const Navbar = () => {
               <Image src="/logo.png" alt="Logo" width={40} height={40} />
 
               <Link
-                className="text-gray-800 ml-2 md:text-xl  text-md font-serif font-semibold"
+                className="text-gray-800 ml-2 md:text-xl  text-md font-serif font-semibold text-orange-800"
                 href="/"
+                
               >
                 Recipe Hub
               </Link>
