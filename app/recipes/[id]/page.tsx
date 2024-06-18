@@ -75,7 +75,7 @@ const RecipeDetailPage = async ({
     <Box as="section" className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
       {/* // */}
       <BackButton />
-      <Flex direction={{ base: "column", lg: "row" }} px={5}>
+      <Flex direction={{ base: "column", lg: "row" }} px={5} pb={5}>
         <Box flex={2} pr={{ base: 0, lg: 5 }} mb={{ base: 5, lg: 0 }}>
           <Box mb={3}>
             <Heading fontFamily={"serif"} as="h1" mb={3}>

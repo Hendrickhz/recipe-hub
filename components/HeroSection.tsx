@@ -8,7 +8,7 @@ const HeroSection = () => {
       bgSize="cover"
       bgPosition="center"
       bgRepeat="no-repeat"
-      py={48}
+      py={60}
       px={4}
       textAlign="center"
     >

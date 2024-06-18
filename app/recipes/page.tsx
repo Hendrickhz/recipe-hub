@@ -3,46 +3,42 @@ import NoRecipesAvailable from "@/components/NoRecipesAvailable";
 import RecipeCard from "@/components/RecipeCard";
 import RecipeCardSkeleton from "@/components/RecipeCardSkeleton";
 import { Recipe } from "@/interfaces";
-import {
-  Box,
-  Button,
-  Flex,
-  Heading,
-  Image,
-  Text,
-} from "@chakra-ui/react";
+import { Box, Button, Flex, Heading, Text } from "@chakra-ui/react";
+import { useRouter, useSearchParams } from "next/navigation";
+
 import React, { useEffect, useState } from "react";
 
 const RecipePage = () => {
-  const [recipes, setRecipes] = useState([]);
+  const [recipes, setRecipes] = useState<Recipe[]>([]);
   const [loading, setLoading] = useState(true);
-  const [selectedCourse, setSelectedCourse] = useState("");
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const course = searchParams.get("course");
+
   useEffect(() => {
     const fetchRecipes = async () => {
       setLoading(true);
       try {
-        const res = await fetch(`/api/recipes?course=${selectedCourse}`);
-        if (res.status == 200) {
+        const res = await fetch(`/api/recipes?course=${course || "All"}`);
+        if (res.status === 200) {
           const data = await res.json();
           setRecipes(data);
         }
       } catch (error) {
-        console.log(error);
+        console.error(error);
       } finally {
         setLoading(false);
       }
     };
     fetchRecipes();
-  }, [selectedCourse]);
+  }, [course]);
+
   const handleCourseChange = (course: string) => {
-    setSelectedCourse(course);
+    router.push(`/recipes?course=${course}`);
   };
+
   return (
-    <Box
-      as="section"
-      className=" 
- mx-auto max-w-7xl px-2 sm:px-6 lg:px-8"
-    >
+    <Box as="section" className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
       <Box textAlign={"center"} my={12}>
         <Heading as={"h1"} size={{ base: "xl", md: "2xl" }}>
           Discover Delicious Recipes
@@ -59,61 +55,52 @@ const RecipePage = () => {
           perfect recipe to inspire your next meal.
         </Text>
       </Box>
-      {/* Buttons */}
+
+      {/* Buttons for Courses */}
       <Flex justifyContent={"center"}>
         <Flex gap={6} flexWrap={"wrap"} justifyContent={"center"} mb={12}>
           <Button
             colorScheme="orange"
-            variant={
-              selectedCourse == "All" || selectedCourse == ""
-                ? "solid"
-                : "outline"
-            }
+            variant={course === "All" ? "solid" : "outline"}
             onClick={() => handleCourseChange("All")}
           >
             All
           </Button>
           <Button
             colorScheme="orange"
-            variant={selectedCourse == "Breakfast" ? "solid" : "outline"}
+            variant={course === "Breakfast" ? "solid" : "outline"}
             onClick={() => handleCourseChange("Breakfast")}
           >
             Breakfast
           </Button>
           <Button
             colorScheme="orange"
-            variant={selectedCourse == "Lunch" ? "solid" : "outline"}
+            variant={course === "Lunch" ? "solid" : "outline"}
             onClick={() => handleCourseChange("Lunch")}
           >
             Lunch
           </Button>
           <Button
             colorScheme="orange"
-            variant={selectedCourse == "Dinner" ? "solid" : "outline"}
+            variant={course === "Dinner" ? "solid" : "outline"}
             onClick={() => handleCourseChange("Dinner")}
           >
             Dinner
           </Button>
+        
           <Button
             colorScheme="orange"
-            variant={selectedCourse == "Dessert" ? "solid" : "outline"}
-            onClick={() => handleCourseChange("Dessert")}
-          >
-            Dessert
-          </Button>
-          <Button
-            colorScheme="orange"
-            variant={selectedCourse == "Snack" ? "solid" : "outline"}
+            variant={course === "Snack" ? "solid" : "outline"}
             onClick={() => handleCourseChange("Snack")}
           >
             Snack
           </Button>
         </Flex>
       </Flex>
-      {/* Buttons */}
 
+      {/* Recipes Display */}
       {loading ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3   gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {[0, 1, 2].map((i) => (
             <RecipeCardSkeleton key={i} />
           ))}
@@ -121,13 +108,13 @@ const RecipePage = () => {
       ) : (
         <>
           {recipes.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3   gap-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
               {recipes.map((recipe: Recipe) => (
                 <RecipeCard key={recipe._id} recipe={recipe} />
               ))}
             </div>
           ) : (
-           <NoRecipesAvailable/>
+            <NoRecipesAvailable />
           )}
         </>
       )}

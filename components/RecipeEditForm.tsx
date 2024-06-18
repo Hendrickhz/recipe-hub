@@ -363,7 +363,6 @@ const RecipeEditForm = ({ recipe }: { recipe: Recipe }) => {
                   <option>Breakfast</option>
                   <option>Lunch, Dinner</option>
                   <option>Snack</option>
-                  <option>Dessert</option>
                 </Select>
               )}
             />
