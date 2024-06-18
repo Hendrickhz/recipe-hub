@@ -1,7 +1,7 @@
 "use client";
 import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
-import { FaBookmark } from "react-icons/fa";
+import { FaBookmark, FaRegBookmark } from "react-icons/fa";
 import { toast } from "react-toastify";
 
 const RecipeSavedButton = ({ recipeId }: { recipeId: string }) => {
@@ -14,7 +14,7 @@ const RecipeSavedButton = ({ recipeId }: { recipeId: string }) => {
     if (!recipeId) return;
     if (!userId) return toast.error("You need to login to save the recipe,");
     try {
-      const res = await fetch(`/api/save`, {
+      const res = await fetch(`/api/saved`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -34,7 +34,7 @@ const RecipeSavedButton = ({ recipeId }: { recipeId: string }) => {
   useEffect(() => {
     const checkIsSave = async () => {
       try {
-        const res = await fetch(`/api/save/check`, {
+        const res = await fetch(`/api/saved/check`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -72,8 +72,7 @@ const RecipeSavedButton = ({ recipeId }: { recipeId: string }) => {
           onClick={handleClick}
           className="bg-red-500 hover:bg-red-600 text-white font-bold w-full py-2 px-4 rounded-full flex items-center justify-center"
         >
-          <FaBookmark className="mr-2" />
-          Remove Save
+          <FaRegBookmark className="mr-2" />
         </button>
       ) : (
         <button
@@ -81,7 +80,6 @@ const RecipeSavedButton = ({ recipeId }: { recipeId: string }) => {
           className="bg-blue-500 hover:bg-blue-600 text-white font-bold w-full py-2 px-4 rounded-full flex items-center justify-center"
         >
           <FaBookmark className="mr-2" />
-          Save Recipe
         </button>
       )}
     </div>

@@ -26,16 +26,15 @@ const CourseButtons = () => {
           
           as={"h2"}
           size={{ base: "lg", md: "xl" }}
-          mb={6}
+   className=" mb-4"
         >
           Explore Recipes by Course
         </Heading>
 
         <SimpleGrid
-          columns={{ base: 1, md: 2, lg: 5 }}
+          columns={{ base: 1, md: 2, lg: 4 }}
           spacing={4}
           w="full"
-          mb={12}
         >
           <Button
             colorScheme="orange"

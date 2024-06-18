@@ -89,7 +89,9 @@ async function fetchUserAndRecipesData(userId: string) {
     if (!apiDomain) {
       return { user: null, recipes: [] };
     }
-    const res = await fetch(`${apiDomain}/recipes/users/${userId}`);
+    const res = await fetch(`${apiDomain}/recipes/users/${userId}`, {
+      cache: "no-cache",
+    });
     if (!res.ok) {
       throw new Error("Failed to Fetch user and recipes data.");
     }
@@ -105,5 +107,5 @@ export {
   fetchRecentRecipes,
   fetchPopularRecipes,
   fetchRecipesByTag,
-  fetchUserAndRecipesData
+  fetchUserAndRecipesData,
 };

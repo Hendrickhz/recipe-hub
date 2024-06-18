@@ -5,7 +5,7 @@ import { Box, Heading, Image, Text } from "@chakra-ui/react";
 import React from "react";
 interface ITagRecipe {
   title: string;
-  id: string;
+  _id: string;
   description: string;
   thumbnailUrl: string;
 }
@@ -19,7 +19,7 @@ const TagPage = async ({ params }: { params: { tag: string } }) => {
       {recipes.length > 0 ? (
         <>
           {recipes.map((recipe) => (
-            <TagRecipeCard key={recipe.id} recipe={recipe} />
+            <TagRecipeCard key={recipe._id} recipe={recipe} />
           ))}
         </>
       ) : (

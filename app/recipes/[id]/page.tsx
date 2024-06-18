@@ -12,6 +12,7 @@ import {
   OrderedList,
   IconButton,
   Button,
+  Link,
 } from "@chakra-ui/react";
 // import { useParams } from "next/navigation";
 // import React, { useEffect, useState } from "react";
@@ -27,6 +28,7 @@ import LinkToUserProfile from "@/components/LinkToUserProfile";
 import { HiOutlineArrowSmLeft } from "react-icons/hi";
 import BackButton from "@/components/BackButton";
 import ShareButtons from "@/components/ShareButtons";
+import RecipeSavedButton from "@/components/RecipeSavedButton";
 
 interface RecipeWithAuthor extends Omit<Recipe, "author"> {
   author: {
@@ -41,10 +43,10 @@ const RecipeDetailPage = async ({
 }) => {
   const recipe: RecipeWithAuthor = await fetchRecipe(id);
 
-  const recipeData= {
-    title:recipe.title,
-    id:recipe._id
-  }
+  const recipeData = {
+    title: recipe.title,
+    id: recipe._id,
+  };
   // const { id } = useParams();
   // const [recipe, setRecipe] = useState<Recipe>();
   // const [loading, setLoading] = useState(false);
@@ -78,9 +80,13 @@ const RecipeDetailPage = async ({
       <Flex direction={{ base: "column", lg: "row" }} px={5} pb={5}>
         <Box flex={2} pr={{ base: 0, lg: 5 }} mb={{ base: 5, lg: 0 }}>
           <Box mb={3}>
-            <Heading fontFamily={"serif"} as="h1" mb={3}>
-              {recipe.title}
-            </Heading>
+            <Flex alignItems={"center"} justifyContent={"space-between"}>
+              {" "}
+              <Heading fontFamily={"serif"} as="h1" mb={3}>
+                {recipe.title}
+              </Heading>
+              <RecipeSavedButton recipeId={recipe._id} />
+            </Flex>
             {/* // */}
             <LinkToUserProfile
               id={recipe.author._id.toString()}
@@ -95,9 +101,13 @@ const RecipeDetailPage = async ({
           <div className=" flex flex-wrap items-center gap-2 my-4">
             <FaTags fontSize={24} />
             {recipe.tags.map((tag: string, index: number) => (
-              <span className=" font-serif uppercase" key={index}>
+              <Link
+                href={`/tags/${tag}`}
+                className=" font-serif uppercase"
+                key={index}
+              >
                 {tag},
-              </span>
+              </Link>
             ))}
           </div>
           <Text mb={5}>{recipe.description}</Text>
@@ -258,7 +268,7 @@ const RecipeDetailPage = async ({
             <Text>{recipe.notes}</Text>
           </Box>
           {/* Notes Section */}
-          <ShareButtons  recipeData={recipeData}/>
+          <ShareButtons recipeData={recipeData} />
         </Box>
 
         <PopularRecipeSideSection />
