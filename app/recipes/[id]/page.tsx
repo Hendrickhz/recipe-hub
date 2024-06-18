@@ -26,6 +26,7 @@ import mongoose from "mongoose";
 import LinkToUserProfile from "@/components/LinkToUserProfile";
 import { HiOutlineArrowSmLeft } from "react-icons/hi";
 import BackButton from "@/components/BackButton";
+import ShareButtons from "@/components/ShareButtons";
 
 interface RecipeWithAuthor extends Omit<Recipe, "author"> {
   author: {
@@ -39,6 +40,11 @@ const RecipeDetailPage = async ({
   params: { id: string };
 }) => {
   const recipe: RecipeWithAuthor = await fetchRecipe(id);
+
+  const recipeData= {
+    title:recipe.title,
+    id:recipe._id
+  }
   // const { id } = useParams();
   // const [recipe, setRecipe] = useState<Recipe>();
   // const [loading, setLoading] = useState(false);
@@ -71,7 +77,7 @@ const RecipeDetailPage = async ({
       <BackButton />
       <Flex direction={{ base: "column", lg: "row" }} px={5}>
         <Box flex={2} pr={{ base: 0, lg: 5 }} mb={{ base: 5, lg: 0 }}>
-          <Box  mb={3}>
+          <Box mb={3}>
             <Heading fontFamily={"serif"} as="h1" mb={3}>
               {recipe.title}
             </Heading>
@@ -252,6 +258,7 @@ const RecipeDetailPage = async ({
             <Text>{recipe.notes}</Text>
           </Box>
           {/* Notes Section */}
+          <ShareButtons  recipeData={recipeData}/>
         </Box>
 
         <PopularRecipeSideSection />
