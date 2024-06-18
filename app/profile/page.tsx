@@ -21,6 +21,7 @@ import {
   useDisclosure,
 } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 import { FaEdit, FaTrash } from "react-icons/fa";
 import { toast } from "react-toastify";
@@ -119,7 +120,7 @@ const LoggedInUserProfilePage = () => {
           </Box>
         ) : (
           <>
-            <NoRecipesAvailable />
+            <NoRecipesAvailable isLoggedInUserProfilePage={true} />
           </>
         )}
       </>
@@ -145,6 +146,7 @@ const ProfileRecipeCard = ({
   //delete modal
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef<HTMLButtonElement>(null);
+  const router = useRouter();
   const handleDelete = async (id: string) => {
     try {
       const res = await fetch(`/api/recipes/${id}`, { method: "DELETE" });
@@ -197,7 +199,7 @@ const ProfileRecipeCard = ({
           <IconButton
             aria-label="editButton"
             icon={<FaEdit />}
-            // onClick={() => onEdit(recipe._id)}
+            onClick={() => router.push(`/recipes/${recipe._id}/edit`)}
             colorScheme="blue"
             size="sm"
             mr={2}

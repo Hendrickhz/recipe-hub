@@ -18,6 +18,9 @@ import {
   NumberDecrementStepper,
   FormErrorMessage,
   Heading,
+  Divider,
+  Text,
+  Image,
 } from "@chakra-ui/react";
 import { AddIcon, DeleteIcon } from "@chakra-ui/icons";
 import { useForm, Controller, useFieldArray } from "react-hook-form";
@@ -26,6 +29,7 @@ import * as Yup from "yup";
 import { toast } from "react-toastify";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Recipe } from "@/interfaces";
 
 // Define the form data types
 interface Ingredient {
@@ -50,8 +54,8 @@ interface RecipeFormData {
   equipment: string;
   ingredients: Ingredient[];
   instructions: Instruction[];
-  thumbnail?: FileList; // Make optional
-  detailImage?: FileList; // Make optional
+  thumbnail?: FileList;
+  detailImage?: FileList;
   notes?: string;
 }
 
@@ -82,12 +86,12 @@ const validationSchema = Yup.object().shape({
       })
     )
     .min(1, "At least one instruction is required"),
-  thumbnail: Yup.mixed().required("Thumbnail image is required"),
-  detailImage: Yup.mixed().required("Detail image is required"),
+  thumbnail: Yup.mixed(),
+  detailImage: Yup.mixed(),
   notes: Yup.string().notRequired(),
 });
 
-const RecipeCreateForm = () => {
+const RecipeEditForm = ({ recipe }: { recipe: Recipe }) => {
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
   const {
@@ -100,20 +104,20 @@ const RecipeCreateForm = () => {
   } = useForm<RecipeFormData>({
     resolver: yupResolver(validationSchema),
     defaultValues: {
-      title: "",
-      tags: "",
-      description: "",
-      servings: 1,
-      prepTime: 1,
-      cookTime: 1,
-      cuisine: "",
-      course: "",
-      equipment: "",
-      ingredients: [{ name: "", quantity: "" }],
-      instructions: [{ step: 1, instruction: "" }],
+      title: recipe.title,
+      tags: recipe.tags.join(", "),
+      description: recipe.description,
+      servings: recipe.servings,
+      prepTime: recipe.prepTime,
+      cookTime: recipe.cookTime,
+      cuisine: recipe.cuisine,
+      course: recipe.course,
+      equipment: recipe.equipment.join(", "),
+      ingredients: recipe.ingredients,
+      instructions: recipe.instructions,
       thumbnail: undefined,
       detailImage: undefined,
-      notes: "",
+      notes: recipe.notes || "",
     },
   });
 
@@ -167,31 +171,30 @@ const RecipeCreateForm = () => {
     if (data.notes) {
       formData.append("notes", data.notes);
     }
-    const loadingToastId = toast.loading("Creating a recipe...");
+    const loadingToastId = toast.loading("Updating the recipe...");
     try {
       console.log(formData);
 
-      const res = await fetch("/api/recipes", {
-        method: "POST",
+      const res = await fetch(`/api/recipes/${recipe._id}`, {
+        method: "PUT",
         body: formData,
       });
-      // Example: Send the form data to an API endpoint
+   
       if (res.status == 200 || res.status == 201) {
         toast.update(loadingToastId, {
-          render: "The recipe is created successfully",
+          render: "The recipe is updated successfully",
           type: "success",
           isLoading: false,
           autoClose: 3000,
         });
         const data = await res.json();
-        console.log(data);
-        const { id } = data;
+       
         setTimeout(() => {
-          router.push(`/recipes/${id}`);
+          router.push(`/recipes/${recipe._id}`);
         }, 300);
       } else {
         toast.update(loadingToastId, {
-          render: "Failed to create the recipe",
+          render: "Failed to update the recipe",
           type: "error",
           isLoading: false,
           autoClose: 3000,
@@ -199,7 +202,7 @@ const RecipeCreateForm = () => {
       }
     } catch (error) {
       toast.update(loadingToastId, {
-        render: "Failed to create the recipe",
+        render: "Failed to update the recipe",
         type: "error",
         isLoading: false,
         autoClose: 3000,
@@ -213,11 +216,11 @@ const RecipeCreateForm = () => {
   return (
     <Box p={5} shadow="md" borderRadius={"8px"} my={4}>
       <Heading as={"h1"} textAlign={"center"}>
-        Recipe Create Form
+        Recipe Edit Form
       </Heading>
       <form onSubmit={handleSubmit(onSubmit)}>
         <VStack spacing={4}>
-          <FormControl isInvalid={!!errors.title}>
+          <FormControl isRequired isInvalid={!!errors.title}>
             <FormLabel>Title</FormLabel>
             <Controller
               name="title"
@@ -231,7 +234,7 @@ const RecipeCreateForm = () => {
             )}
           </FormControl>
 
-          <FormControl isInvalid={!!errors.tags}>
+          <FormControl isRequired isInvalid={!!errors.tags}>
             <FormLabel>Tags</FormLabel>
             <Controller
               name="tags"
@@ -245,7 +248,7 @@ const RecipeCreateForm = () => {
             )}
           </FormControl>
 
-          <FormControl isInvalid={!!errors.description}>
+          <FormControl isRequired isInvalid={!!errors.description}>
             <FormLabel>Description</FormLabel>
             <Controller
               name="description"
@@ -259,7 +262,7 @@ const RecipeCreateForm = () => {
             )}
           </FormControl>
 
-          <FormControl isInvalid={!!errors.servings}>
+          <FormControl isRequired isInvalid={!!errors.servings}>
             <FormLabel>Servings</FormLabel>
             <Controller
               name="servings"
@@ -284,7 +287,7 @@ const RecipeCreateForm = () => {
           </FormControl>
 
           <Flex className=" w-full justify-between gap-4">
-            <FormControl isInvalid={!!errors.prepTime}>
+            <FormControl isRequired isInvalid={!!errors.prepTime}>
               <FormLabel>Preparation Time (minutes)</FormLabel>
               <Controller
                 name="prepTime"
@@ -308,7 +311,7 @@ const RecipeCreateForm = () => {
               )}
             </FormControl>
 
-            <FormControl isInvalid={!!errors.cookTime}>
+            <FormControl isRequired isInvalid={!!errors.cookTime}>
               <FormLabel>Cooking Time (minutes)</FormLabel>
               <Controller
                 name="cookTime"
@@ -333,7 +336,7 @@ const RecipeCreateForm = () => {
             </FormControl>
           </Flex>
 
-          <FormControl isInvalid={!!errors.cuisine}>
+          <FormControl isRequired isInvalid={!!errors.cuisine}>
             <FormLabel>Cuisine</FormLabel>
             <Controller
               name="cuisine"
@@ -350,7 +353,7 @@ const RecipeCreateForm = () => {
             )}
           </FormControl>
 
-          <FormControl isInvalid={!!errors.course}>
+          <FormControl isRequired isInvalid={!!errors.course}>
             <FormLabel>Course</FormLabel>
             <Controller
               name="course"
@@ -369,7 +372,7 @@ const RecipeCreateForm = () => {
             )}
           </FormControl>
 
-          <FormControl isInvalid={!!errors.equipment}>
+          <FormControl isRequired isInvalid={!!errors.equipment}>
             <FormLabel>Equipment</FormLabel>
             <Controller
               name="equipment"
@@ -383,7 +386,7 @@ const RecipeCreateForm = () => {
             )}
           </FormControl>
 
-          <FormControl isInvalid={!!errors.ingredients}>
+          <FormControl isRequired isInvalid={!!errors.ingredients}>
             <FormLabel>Ingredients</FormLabel>
             {ingredientFields.map((item, index) => (
               <Flex
@@ -441,7 +444,7 @@ const RecipeCreateForm = () => {
             </Box>
           </FormControl>
 
-          <FormControl isInvalid={!!errors.instructions}>
+          <FormControl isRequired isInvalid={!!errors.instructions}>
             <FormLabel>Instructions</FormLabel>
             {instructionFields.map((item, index) => (
               <Box key={item.id}>
@@ -488,10 +491,31 @@ const RecipeCreateForm = () => {
               </FormErrorMessage>
             )}
           </FormControl>
-
+          <Divider />
+          <Flex w={"full"} justifyContent={"flex-start"}>
+            {" "}
+            <Text textAlign={"start"} fontWeight={600}>
+              Current Images
+            </Text>
+          </Flex>
+          <Flex w={"full"} gap={6} justifyContent={"start"}>
+            {" "}
+            <Image
+              boxSize={"150px"}
+              alt={recipe.title}
+              src={recipe.thumbnailUrl}
+              objectFit={"cover"}
+            />
+            <Image
+              boxSize={"150px"}
+              alt={recipe.title}
+              src={recipe.detailImageUrl}
+              objectFit={"cover"}
+            />
+          </Flex>
           {/* Thumbnail Image Input */}
           <FormControl isInvalid={!!errors.thumbnail}>
-            <FormLabel>Thumbnail Image</FormLabel>
+            <FormLabel>New Thumbnail Image</FormLabel>
             <Controller
               name="thumbnail"
               control={control}
@@ -507,7 +531,7 @@ const RecipeCreateForm = () => {
 
           {/* Detail Image Input */}
           <FormControl isInvalid={!!errors.detailImage}>
-            <FormLabel>Detail Image</FormLabel>
+            <FormLabel>New Detail Image</FormLabel>
             <Controller
               name="detailImage"
               control={control}
@@ -521,7 +545,7 @@ const RecipeCreateForm = () => {
             {errors.detailImage && <p>{errors.detailImage.message}</p>}
           </FormControl>
 
-          <FormControl isInvalid={!!errors.notes}>
+          <FormControl isRequired isInvalid={!!errors.notes}>
             <FormLabel>Notes</FormLabel>
             <Controller
               name="notes"
@@ -542,7 +566,7 @@ const RecipeCreateForm = () => {
             colorScheme="orange"
             size={"lg"}
           >
-            Submit Recipe
+            Update Recipe
           </Button>
         </VStack>
       </form>
@@ -550,4 +574,4 @@ const RecipeCreateForm = () => {
   );
 };
 
-export default RecipeCreateForm;
+export default RecipeEditForm;

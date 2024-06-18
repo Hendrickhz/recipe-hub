@@ -3,6 +3,7 @@ import Recipe from "@/models/Recipe";
 import cloudinary from "@/config/cloudinary";
 import mongoose from "mongoose";
 import { getSessionUser } from "@/utils/getSessionUser";
+import { getSecureUrl } from "@/utils/imageUpload";
 
 // interface IRecipeData {
 //   title: string | undefined;
@@ -69,6 +70,16 @@ export const POST = async (request: Request) => {
       return new Response("Bad Request.", { status: 400 });
     }
 
+    const thumbnailFile = formData.get("thumbnail") as File;
+    const detailImageFile = formData.get("detailImage") as File;
+    let thumbnailUrl, detailImageUrl;
+    if (thumbnailFile && thumbnailFile.size > 0) {
+      thumbnailUrl = await getSecureUrl(detailImageFile, "thumbnail_imgs");
+    }
+
+    if (detailImageFile && detailImageFile.size > 0) {
+      detailImageUrl = await getSecureUrl(detailImageFile, "detail_imgs");
+    }
     const ingredients = JSON.parse(formData.get("ingredients")!.toString());
     const instructions = JSON.parse(formData.get("instructions")!.toString());
     const prepTime = parseInt(formData.get("prepTime")!.toString(), 10);
@@ -93,74 +104,74 @@ export const POST = async (request: Request) => {
       ingredients,
       instructions,
       notes: formData.get("notes")?.toString() || "",
-      thumbnailUrl: "/a-1.png",
-      detailImageUrl: "/a-1.png",
+      thumbnailUrl,
+      detailImageUrl,
       author: userId,
     };
 
-    const newRecipe = new Recipe(recipeData);
-    await newRecipe.save();
+    // const newRecipe = new Recipe(recipeData);
+    // await newRecipe.save();
 
     // Return response immediately after saving the recipe
+
+    // Upload images to Cloudinary in the background
+    // (async () => {
+    //   const imageUploadPromises = [];
+    //   const thumbnail = formData.get("thumbnail") as File;
+    //   const detailImage = formData.get("detailImage") as File;
+
+    //   if (thumbnail) {
+    //     const thumbnailBuffer = await thumbnail.arrayBuffer();
+    //     const thumbnailArray = Array.from(new Uint8Array(thumbnailBuffer));
+    //     const thumbnailData = Buffer.from(thumbnailArray);
+    //     const thumbnailBase64 = thumbnailData.toString("base64");
+
+    //     const thumbnailResult = cloudinary.uploader.upload(
+    //       `data:image/png;base64,${thumbnailBase64}`,
+    //       { folder: "thumbnail_imgs" }
+    //     );
+    //     imageUploadPromises.push(thumbnailResult);
+    //   }
+
+    //   if (detailImage) {
+    //     const detailImageBuffer = await detailImage.arrayBuffer();
+    //     const detailImageArray = Array.from(new Uint8Array(detailImageBuffer));
+    //     const detailImageData = Buffer.from(detailImageArray);
+    //     const detailImageBase64 = detailImageData.toString("base64");
+
+    //     const detailImageResult = cloudinary.uploader.upload(
+    //       `data:image/png;base64,${detailImageBase64}`,
+    //       { folder: "detail_imgs" }
+    //     );
+    //     imageUploadPromises.push(detailImageResult);
+    //   }
+
+    //   const [uploadedThumbnail, uploadedDetailImage] = await Promise.all(
+    //     imageUploadPromises
+    //   );
+
+    //   if (uploadedThumbnail) {
+    //     await Recipe.updateOne(
+    //       { _id: newRecipe._id },
+    //       { $set: { thumbnailUrl: uploadedThumbnail.secure_url } }
+    //     );
+    //   }
+
+    //   if (uploadedDetailImage) {
+    //     await Recipe.updateOne(
+    //       { _id: newRecipe._id },
+    //       { $set: { detailImageUrl: uploadedDetailImage.secure_url } }
+    //     );
+    //   }
+    // })();
+    const newRecipe = new Recipe(recipeData);
+    await newRecipe.save();
     const response = new Response(JSON.stringify({ id: newRecipe._id }), {
       status: 201,
     });
-
-    // Upload images to Cloudinary in the background
-    (async () => {
-      const imageUploadPromises = [];
-      const thumbnail = formData.get("thumbnail") as File;
-      const detailImage = formData.get("detailImage") as File;
-
-      if (thumbnail) {
-        const thumbnailBuffer = await thumbnail.arrayBuffer();
-        const thumbnailArray = Array.from(new Uint8Array(thumbnailBuffer));
-        const thumbnailData = Buffer.from(thumbnailArray);
-        const thumbnailBase64 = thumbnailData.toString("base64");
-
-        const thumbnailResult = cloudinary.uploader.upload(
-          `data:image/png;base64,${thumbnailBase64}`,
-          { folder: "thumbnail_imgs" }
-        );
-        imageUploadPromises.push(thumbnailResult);
-      }
-
-      if (detailImage) {
-        const detailImageBuffer = await detailImage.arrayBuffer();
-        const detailImageArray = Array.from(new Uint8Array(detailImageBuffer));
-        const detailImageData = Buffer.from(detailImageArray);
-        const detailImageBase64 = detailImageData.toString("base64");
-
-        const detailImageResult = cloudinary.uploader.upload(
-          `data:image/png;base64,${detailImageBase64}`,
-          { folder: "detail_imgs" }
-        );
-        imageUploadPromises.push(detailImageResult);
-      }
-
-      const [uploadedThumbnail, uploadedDetailImage] = await Promise.all(
-        imageUploadPromises
-      );
-
-      if (uploadedThumbnail) {
-        await Recipe.updateOne(
-          { _id: newRecipe._id },
-          { $set: { thumbnailUrl: uploadedThumbnail.secure_url } }
-        );
-      }
-
-      if (uploadedDetailImage) {
-        await Recipe.updateOne(
-          { _id: newRecipe._id },
-          { $set: { detailImageUrl: uploadedDetailImage.secure_url } }
-        );
-      }
-    })();
-
     return response;
   } catch (error) {
     console.log(error);
     return new Response("Something went wrong.", { status: 500 });
   }
 };
-
