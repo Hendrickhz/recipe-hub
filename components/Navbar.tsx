@@ -45,7 +45,7 @@ const Navbar = () => {
     fetchProviders();
   }, []);
   return (
-    <nav className="  bg-orange-100 py-3">
+    <nav className="  bg-orange-100 py-3 sticky top-0 left-0  z-50">
       <div className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
         <Box className=" px-4 py-2  container">
           <Flex align="center">
@@ -54,7 +54,7 @@ const Navbar = () => {
               <Image src="/logo.png" alt="Logo" width={40} height={40} />
 
               <Link
-                className="text-gray-800 ml-2 md:text-xl  text-md font-serif font-semibold text-orange-800"
+                className=" ml-2 md:text-xl  text-md font-serif font-semibold text-orange-800"
                 href="/"
                 
               >

@@ -74,7 +74,7 @@ export const POST = async (request: Request) => {
     const detailImageFile = formData.get("detailImage") as File;
     let thumbnailUrl, detailImageUrl;
     if (thumbnailFile && thumbnailFile.size > 0) {
-      thumbnailUrl = await getSecureUrl(detailImageFile, "thumbnail_imgs");
+      thumbnailUrl = await getSecureUrl(thumbnailFile, "thumbnail_imgs");
     }
 
     if (detailImageFile && detailImageFile.size > 0) {
