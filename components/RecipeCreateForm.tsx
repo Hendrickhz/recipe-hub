@@ -217,7 +217,7 @@ const RecipeCreateForm = () => {
       </Heading>
       <form onSubmit={handleSubmit(onSubmit)}>
         <VStack spacing={4}>
-          <FormControl isInvalid={!!errors.title}>
+          <FormControl isRequired isInvalid={!!errors.title}>
             <FormLabel>Title</FormLabel>
             <Controller
               name="title"
@@ -231,7 +231,7 @@ const RecipeCreateForm = () => {
             )}
           </FormControl>
 
-          <FormControl isInvalid={!!errors.tags}>
+          <FormControl isRequired isInvalid={!!errors.tags}>
             <FormLabel>Tags</FormLabel>
             <Controller
               name="tags"
@@ -245,7 +245,7 @@ const RecipeCreateForm = () => {
             )}
           </FormControl>
 
-          <FormControl isInvalid={!!errors.description}>
+          <FormControl isRequired isInvalid={!!errors.description}>
             <FormLabel>Description</FormLabel>
             <Controller
               name="description"
@@ -259,7 +259,7 @@ const RecipeCreateForm = () => {
             )}
           </FormControl>
 
-          <FormControl isInvalid={!!errors.servings}>
+          <FormControl isRequired isInvalid={!!errors.servings}>
             <FormLabel>Servings</FormLabel>
             <Controller
               name="servings"
@@ -284,7 +284,7 @@ const RecipeCreateForm = () => {
           </FormControl>
 
           <Flex className=" w-full justify-between gap-4">
-            <FormControl isInvalid={!!errors.prepTime}>
+            <FormControl isRequired isInvalid={!!errors.prepTime}>
               <FormLabel>Preparation Time (minutes)</FormLabel>
               <Controller
                 name="prepTime"
@@ -308,7 +308,7 @@ const RecipeCreateForm = () => {
               )}
             </FormControl>
 
-            <FormControl isInvalid={!!errors.cookTime}>
+            <FormControl isRequired isInvalid={!!errors.cookTime}>
               <FormLabel>Cooking Time (minutes)</FormLabel>
               <Controller
                 name="cookTime"
@@ -333,7 +333,7 @@ const RecipeCreateForm = () => {
             </FormControl>
           </Flex>
 
-          <FormControl isInvalid={!!errors.cuisine}>
+          <FormControl isRequired isInvalid={!!errors.cuisine}>
             <FormLabel>Cuisine</FormLabel>
             <Controller
               name="cuisine"
@@ -350,7 +350,7 @@ const RecipeCreateForm = () => {
             )}
           </FormControl>
 
-          <FormControl isInvalid={!!errors.course}>
+          <FormControl isRequired isInvalid={!!errors.course}>
             <FormLabel>Course</FormLabel>
             <Controller
               name="course"
@@ -369,7 +369,7 @@ const RecipeCreateForm = () => {
             )}
           </FormControl>
 
-          <FormControl isInvalid={!!errors.equipment}>
+          <FormControl isRequired isInvalid={!!errors.equipment}>
             <FormLabel>Equipment</FormLabel>
             <Controller
               name="equipment"
@@ -383,7 +383,7 @@ const RecipeCreateForm = () => {
             )}
           </FormControl>
 
-          <FormControl isInvalid={!!errors.ingredients}>
+          <FormControl isRequired isInvalid={!!errors.ingredients}>
             <FormLabel>Ingredients</FormLabel>
             {ingredientFields.map((item, index) => (
               <Flex
@@ -441,7 +441,7 @@ const RecipeCreateForm = () => {
             </Box>
           </FormControl>
 
-          <FormControl isInvalid={!!errors.instructions}>
+          <FormControl isRequired isInvalid={!!errors.instructions}>
             <FormLabel>Instructions</FormLabel>
             {instructionFields.map((item, index) => (
               <Box key={item.id}>
@@ -490,7 +490,7 @@ const RecipeCreateForm = () => {
           </FormControl>
 
           {/* Thumbnail Image Input */}
-          <FormControl isInvalid={!!errors.thumbnail}>
+          <FormControl isRequired isInvalid={!!errors.thumbnail}>
             <FormLabel>Thumbnail Image</FormLabel>
             <Controller
               name="thumbnail"
@@ -506,7 +506,7 @@ const RecipeCreateForm = () => {
           </FormControl>
 
           {/* Detail Image Input */}
-          <FormControl isInvalid={!!errors.detailImage}>
+          <FormControl isRequired isInvalid={!!errors.detailImage}>
             <FormLabel>Detail Image</FormLabel>
             <Controller
               name="detailImage"
@@ -521,7 +521,7 @@ const RecipeCreateForm = () => {
             {errors.detailImage && <p>{errors.detailImage.message}</p>}
           </FormControl>
 
-          <FormControl isInvalid={!!errors.notes}>
+          <FormControl isRequired isInvalid={!!errors.notes}>
             <FormLabel>Notes</FormLabel>
             <Controller
               name="notes"

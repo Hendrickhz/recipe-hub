@@ -561,7 +561,7 @@ const RecipeEditForm = ({ recipe }: { recipe: Recipe }) => {
 
           <Button
             isLoading={isSubmitting}
-            loadingText="Submitting"
+            loadingText="Updating"
             type="submit"
             colorScheme="orange"
             size={"lg"}

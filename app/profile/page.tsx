@@ -143,12 +143,14 @@ const ProfileRecipeCard = ({
   recipe: IRecipeProps;
   removeRecipe: (id: string) => void;
 }) => {
+  const [isDeleting, setIsDeleting] = useState(false);
   //delete modal
   const { isOpen, onOpen, onClose } = useDisclosure();
   const cancelRef = useRef<HTMLButtonElement>(null);
   const router = useRouter();
   const handleDelete = async (id: string) => {
     try {
+      setIsDeleting(true);
       const res = await fetch(`/api/recipes/${id}`, { method: "DELETE" });
       if (res.status == 200) {
         toast.success("Deleted the recipe successfully.");
@@ -157,8 +159,10 @@ const ProfileRecipeCard = ({
     } catch (error) {
       console.log(error);
       toast.error("Failed to delete the recipe.");
+    } finally {
+      setIsDeleting(false);
+      onClose();
     }
-    onClose();
   };
 
   return (
@@ -234,6 +238,8 @@ const ProfileRecipeCard = ({
                 Cancel
               </Button>
               <Button
+                isLoading={isDeleting}
+                loadingText="Deleting"
                 colorScheme="red"
                 onClick={() => handleDelete(recipe._id.toString())}
                 ml={3}

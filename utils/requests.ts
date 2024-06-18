@@ -71,7 +71,9 @@ async function fetchRecipesByTag(tag: string) {
     if (!apiDomain) {
       return [];
     }
-    const res = await fetch(`${apiDomain}/recipes/tags/${tag}`,{cache:'no-cache'});
+    const res = await fetch(`${apiDomain}/recipes/tags/${tag}`, {
+      cache: "no-cache",
+    });
     if (!res.ok) {
       throw new Error("Failed to Fetch Recipes by tag.");
     }
@@ -81,4 +83,27 @@ async function fetchRecipesByTag(tag: string) {
     return [];
   }
 }
-export { fetchRecipes, fetchRecipe, fetchRecentRecipes, fetchPopularRecipes, fetchRecipesByTag };
+
+async function fetchUserAndRecipesData(userId: string) {
+  try {
+    if (!apiDomain) {
+      return { user: null, recipes: [] };
+    }
+    const res = await fetch(`${apiDomain}/recipes/users/${userId}`);
+    if (!res.ok) {
+      throw new Error("Failed to Fetch user and recipes data.");
+    }
+    return res.json();
+  } catch (error) {
+    console.log(error);
+    return { user: null, recipes: [] };
+  }
+}
+export {
+  fetchRecipes,
+  fetchRecipe,
+  fetchRecentRecipes,
+  fetchPopularRecipes,
+  fetchRecipesByTag,
+  fetchUserAndRecipesData
+};

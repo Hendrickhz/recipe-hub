@@ -4,14 +4,13 @@ import {
   Heading,
   Image,
   Text,
-  VStack,
   Flex,
-  List,
   ListItem,
   Divider,
   UnorderedList,
   AbsoluteCenter,
   OrderedList,
+  Link,
 } from "@chakra-ui/react";
 // import { useParams } from "next/navigation";
 // import React, { useEffect, useState } from "react";
@@ -22,12 +21,20 @@ import { PiForkKnife } from "react-icons/pi";
 import PopularRecipeSideSection from "@/components/PopularRecipeSideSection";
 import { fetchRecipe } from "@/utils/requests";
 import { showRecipeTime } from "@/utils/showRecipeTime";
+import mongoose from "mongoose";
+import LinkToUserProfile from "@/components/LinkToUserProfile";
+interface RecipeWithAuthor extends Omit<Recipe, 'author'> {
+  author: {
+    _id: mongoose.Types.ObjectId;
+    username: string;
+  };
+}
 const RecipeDetailPage = async ({
   params: { id },
 }: {
   params: { id: string };
 }) => {
-  const recipe: Recipe = await fetchRecipe(id);
+  const recipe: RecipeWithAuthor = await fetchRecipe(id);
   // const { id } = useParams();
   // const [recipe, setRecipe] = useState<Recipe>();
   // const [loading, setLoading] = useState(false);
@@ -58,9 +65,13 @@ const RecipeDetailPage = async ({
     <Box as="section" className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
       <Flex direction={{ base: "column", lg: "row" }} p={5}>
         <Box flex={2} pr={{ base: 0, lg: 5 }} mb={{ base: 5, lg: 0 }}>
-          <Heading as="h1" mt={5} mb={3} fontFamily={"serif"}>
-            {recipe.title}
-          </Heading>
+          <Box mt={5} mb={3}>
+            <Heading  fontFamily={"serif"} as="h1" mb={3}>
+              {recipe.title}
+            </Heading>
+         {/* // */}
+         <LinkToUserProfile id={recipe.author._id} username={recipe.author.username}/>
+          </Box>
           <Image
             src={recipe.thumbnailUrl}
             alt={recipe.title}

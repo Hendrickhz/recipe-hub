@@ -31,7 +31,7 @@ export const GET = async (
   try {
     await connectDB();
     const { id } = params;
-    const recipe = await Recipe.findById(id);
+    const recipe = await Recipe.findById(id).populate("author", "username");
     if (!recipe) {
       return new Response("Recipe Not Found", { status: 404 });
     }
@@ -67,8 +67,10 @@ export const DELETE = async (
     const detailImageUrlPublicId = `detail_imgs/${
       recipe.detailImageUrl.split("/").pop().split(".")[0]
     }`;
-    await deleteImageFromCloudinary(thumbnailUrlPublicId);
-    await deleteImageFromCloudinary(detailImageUrlPublicId);
+    await cloudinary.uploader.destroy(thumbnailUrlPublicId);
+    await cloudinary.uploader.destroy(detailImageUrlPublicId);
+    // await deleteImageFromCloudinary(thumbnailUrlPublicId);
+    // await deleteImageFromCloudinary(detailImageUrlPublicId);
     await recipe.deleteOne(_id);
     return new Response("Recipe is deleted successfully.", { status: 200 });
   } catch (error) {
@@ -77,11 +79,11 @@ export const DELETE = async (
   }
 };
 
-async function deleteImageFromCloudinary(publicId: string) {
-  await new Promise<void>((resolve, reject) => {
-    cloudinary.uploader.destroy(publicId);
-  });
-}
+// async function deleteImageFromCloudinary(publicId: string) {
+//   await new Promise<void>((resolve, reject) => {
+//     cloudinary.uploader.destroy(publicId);
+//   });
+// }
 
 //PUT /api/recipes/[id]
 export const PUT = async (
@@ -147,19 +149,19 @@ export const PUT = async (
     // Delete old thumbnail image if a new one is provided
     if (newThumbnailFile && newThumbnailFile.size > 0) {
       newThumbnailUrl = await getSecureUrl(newThumbnailFile, "thumbnail_imgs");
-      if (currentThumbnailUrl) {
-        const oldThumbnailPublicId = extractPublicId(currentThumbnailUrl, "thumbnail_imgs");
-        await deleteImageFromCloudinary(oldThumbnailPublicId);
-      }
+      // if (currentThumbnailUrl) {
+      //   const oldThumbnailPublicId = extractPublicId(currentThumbnailUrl, "thumbnail_imgs");
+      //   await deleteImageFromCloudinary(oldThumbnailPublicId);
+      // }
     }
 
     // Delete old detail image if a new one is provided
     if (newDetailImageFile && newDetailImageFile.size > 0) {
       newDetailImageUrl = await getSecureUrl(newDetailImageFile, "detail_imgs");
-      if (currentDetailImageUrl) {
-        const oldDetailPublicId = extractPublicId(currentDetailImageUrl, "detail_imgs");
-        await deleteImageFromCloudinary(oldDetailPublicId);
-      }
+      // if (currentDetailImageUrl) {
+      //   const oldDetailPublicId = extractPublicId(currentDetailImageUrl, "detail_imgs");
+      //   await deleteImageFromCloudinary(oldDetailPublicId);
+      // }
     }
 
     const recipeData = {
