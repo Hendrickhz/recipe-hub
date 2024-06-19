@@ -73,6 +73,7 @@ const RecipeDetailPage = async ({
   // if (!recipe) {
   //   return "Not found";
   // }
+
   return (
     <Box as="section" className="mx-auto max-w-7xl px-2 sm:px-6 lg:px-8">
       {/* // */}

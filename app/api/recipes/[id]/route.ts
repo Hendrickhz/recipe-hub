@@ -1,6 +1,7 @@
 import cloudinary from "@/config/cloudinary";
 import connectDB from "@/config/database";
 import Recipe from "@/models/Recipe";
+import User from "@/models/User";
 import { getSessionUser } from "@/utils/getSessionUser";
 import { getSecureUrl } from "@/utils/imageUpload";
 import mongoose from "mongoose";
@@ -69,8 +70,9 @@ export const DELETE = async (
     }`;
     await cloudinary.uploader.destroy(thumbnailUrlPublicId);
     await cloudinary.uploader.destroy(detailImageUrlPublicId);
-    // await deleteImageFromCloudinary(thumbnailUrlPublicId);
-    // await deleteImageFromCloudinary(detailImageUrlPublicId);
+
+    // Remove recipe ID from all users' saved lists
+    await User.updateMany({ saved: _id }, { $pull: { saved: _id } });
     await recipe.deleteOne(_id);
     return new Response("Recipe is deleted successfully.", { status: 200 });
   } catch (error) {
@@ -78,6 +80,8 @@ export const DELETE = async (
     return new Response("Something went wrong.", { status: 500 });
   }
 };
+// await deleteImageFromCloudinary(thumbnailUrlPublicId);
+// await deleteImageFromCloudinary(detailImageUrlPublicId);
 
 // async function deleteImageFromCloudinary(publicId: string) {
 //   await new Promise<void>((resolve, reject) => {
