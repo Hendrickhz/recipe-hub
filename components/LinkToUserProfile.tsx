@@ -11,7 +11,7 @@ const LinkToUserProfile = ({
   username: string;
 }) => {
   const { data: session } = useSession();
-  const isLoggedInUser = id == session?.user?.id;
+  const isLoggedInUser = id === session?.user?.id;
   const hrefLink= isLoggedInUser ? '/profile' : `/users/${id}`
   console.log(session)
   return (
