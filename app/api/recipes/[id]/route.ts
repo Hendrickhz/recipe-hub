@@ -5,25 +5,17 @@ import User from "@/models/User";
 import { getSessionUser } from "@/utils/getSessionUser";
 import { getSecureUrl } from "@/utils/imageUpload";
 import mongoose from "mongoose";
-function extractPublicId(secureUrl: string, folderName: string) {
-  const folderPosition = secureUrl.indexOf(folderName);
+// function extractPublicId(secureUrl: string, folderName: string) {
+//   const folderPosition = secureUrl.indexOf(folderName);
 
-  // Extract the part of the URL that contains the public ID and the file name
-  const urlPart = secureUrl.substring(folderPosition);
+//   // Extract the part of the URL that contains the public ID and the file name
+//   const urlPart = secureUrl.substring(folderPosition);
 
-  // Remove the file extension from the extracted part
-  const publicId = urlPart.substring(0, urlPart.lastIndexOf("."));
+//   // Remove the file extension from the extracted part
+//   const publicId = urlPart.substring(0, urlPart.lastIndexOf("."));
 
-  return publicId;
-}
-interface CloudinaryDeleteResult {
-  result: string; // Expected to be "ok" if successful
-}
-
-interface CloudinaryDeleteError {
-  message: string;
-  http_code: number;
-}
+//   return publicId;
+// }
 //GET /api/recipes/[id]
 export const GET = async (
   request: Request,

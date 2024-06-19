@@ -1,11 +1,11 @@
 import connectDB from "@/config/database";
 import Recipe from "@/models/Recipe";
 import { getSessionUser } from "@/utils/getSessionUser";
-
+export const dynamic = "force-dynamic";
 //GET /api/recipes/me
 export const GET = async () => {
   try {
-    const sessionUser = await getSessionUser();console.log(sessionUser)
+    const sessionUser = await getSessionUser();
     if (!sessionUser || !sessionUser.userId) {
       return new Response("Authentication is required.", { status: 401 });
     }
