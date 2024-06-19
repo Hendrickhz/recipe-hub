@@ -5,7 +5,7 @@ Recipe Hub is a modern web application that allows users to explore, save, creat
 ## Table of Contents
 - [Features](#features)
 - [Technologies Used](#technologies-used)
-- [App Link] (#app-link)
+- [AppLink] (#app-link)
 
 
 ## Features
@@ -24,3 +24,6 @@ Recipe Hub is a modern web application that allows users to explore, save, creat
 - **Image Storage**: [Cloudinary](https://cloudinary.com/)
 - **Authentication**: [NextAuth.js](https://next-auth.js.org/), Google OAuth
 - **Deployment**: [Vercel](https://vercel.com/)
+
+## App-Link
+ The application will be available at [Here](https://recipe-hub-by-hendrick.vercel.app/).

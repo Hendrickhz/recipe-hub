@@ -15,7 +15,7 @@ const RecipesSection = () => {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   const searchParams = useSearchParams();
-  const course = searchParams.get("course");
+  const course = searchParams.get("course") || "";
   //pagination
   const [page, setPage] = useState(1);
   const [pageSize, setPageSize] = useState(6);
@@ -58,7 +58,7 @@ const RecipesSection = () => {
           <Button
             colorScheme="orange"
             variant={
-              course === undefined || course === "All" ? "solid" : "outline"
+              course === "" || course === "All" ? "solid" : "outline"
             }
             onClick={() => handleCourseChange("All")}
           >
