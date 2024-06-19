@@ -5,7 +5,7 @@ import { getSessionUser } from "@/utils/getSessionUser";
 //GET /api/recipes/me
 export const GET = async () => {
   try {
-    const sessionUser = await getSessionUser();
+    const sessionUser = await getSessionUser();console.log(sessionUser)
     if (!sessionUser || !sessionUser.userId) {
       return new Response("Authentication is required.", { status: 401 });
     }

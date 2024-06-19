@@ -1,4 +1,5 @@
 "use client";
+import { Box, IconButton, Spinner, Tooltip } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";
 import React, { useEffect, useState } from "react";
 import { FaBookmark, FaRegBookmark } from "react-icons/fa";
@@ -24,7 +25,7 @@ const RecipeSavedButton = ({ recipeId }: { recipeId: string }) => {
       if (res.status == 200) {
         const data = await res.json();
         setIsSaved(data.isSaved);
-        return toast(data.message);
+        return toast.success(data.message);
       }
     } catch (error) {
       console.log(error);
@@ -57,32 +58,36 @@ const RecipeSavedButton = ({ recipeId }: { recipeId: string }) => {
   }, [userId, recipeId]);
   if (loading) {
     return (
-      <div>
-        <button className="bg-gray-500 hover:bg-gray-600 text-white font-bold w-full py-2 px-4 rounded-full flex items-center justify-center">
-          <FaBookmark className="mr-2" />
-          Loading...
-        </button>
-      </div>
+      <Box>
+        <Spinner/>
+      </Box>
     );
   }
   return (
-    <div>
+    <Box>
       {isSaved ? (
-        <button
-          onClick={handleClick}
-          className="bg-red-500 hover:bg-red-600 text-white font-bold w-full py-2 px-4 rounded-full flex items-center justify-center"
-        >
-          <FaRegBookmark className="mr-2" />
-        </button>
+        <Tooltip placement="top" label="Remove from the saved list.">
+          <IconButton
+          colorScheme="orange"
+          aria-label="remove-save=btn"
+          variant={'ghost'}
+          icon={<FaBookmark />}
+          onClick={handleClick}     size={'lg'}
+        />
+        </Tooltip>
       ) : (
-        <button
-          onClick={handleClick}
-          className="bg-blue-500 hover:bg-blue-600 text-white font-bold w-full py-2 px-4 rounded-full flex items-center justify-center"
-        >
-          <FaBookmark className="mr-2" />
-        </button>
+        <Tooltip placement="top" label="Add to the saved list.">
+        <IconButton
+        colorScheme="orange"
+        size={'lg'}
+        aria-label="add-save=btn"
+        variant={'ghost'}
+        icon={<FaRegBookmark />}
+        onClick={handleClick}
+      />
+      </Tooltip>
       )}
-    </div>
+    </Box>
   );
 };
 

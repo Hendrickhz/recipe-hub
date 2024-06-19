@@ -1,7 +1,7 @@
 import { Box, Button, Flex, Image, Link, Text } from "@chakra-ui/react";
 import React from "react";
 
-const NoRecipesAvailable = ({ isLoggedInUserProfilePage = false }) => {
+const NoRecipesAvailable = ({ isLoggedInUserProfilePage = false ,isSavedPage=false}) => {
   return (
     <Flex
       textAlign={"center"}
@@ -20,6 +20,11 @@ const NoRecipesAvailable = ({ isLoggedInUserProfilePage = false }) => {
       {isLoggedInUserProfilePage && (
        <Box> <Button as={Link} href="/recipes/create" colorScheme="orange">
        Share A Recipe
+     </Button></Box>
+      )}
+      {isSavedPage && (
+       <Box> <Button as={Link} href="/recipes" colorScheme="orange">
+       Explore Recipes
      </Button></Box>
       )}
     </Flex>

@@ -4,32 +4,34 @@ import User from "@/models/User";
 import { getSessionUser } from "@/utils/getSessionUser";
 
 // GET /api/saved
-export const GET = async () => {
-  try {
-    await connectDB();
-    const sessionUser = await getSessionUser();
-    if (!sessionUser || !sessionUser.userId) {
-      return new Response("User Id is required", { status: 401 });
-    }
+// export const GET = async (request: Request) => {
+//   try {
+//     const sessionUser = await getSessionUser();
+//     await connectDB();
+//     console.log("Session User:", sessionUser);
+//     if (!sessionUser || !sessionUser.userId) {
+//       return new Response("User Id is required", { status: 401 });
+//     }
 
-    const user = await User.findById(sessionUser.userId);
+//     const user = await User.findById(sessionUser.userId);
 
-    const savedRecipes = await Recipe.find({ _id: { $in: user.saved } });
+//     const savedRecipes = await Recipe.find({ _id: { $in: user.saved } });
 
-    return new Response(JSON.stringify(savedRecipes), {
-      status: 200,
-    });
-  } catch (error) {
-    console.log(error);
-    return new Response("Something went wrong...", { status: 500 });
-  }
-};
+//     return new Response(JSON.stringify(savedRecipes), {
+//       status: 200,
+//     });
+//   } catch (error) {
+//     console.log(error);
+//     return new Response("Something went wrong...", { status: 500 });
+//   }
+// };
 // POST /api/saved
 export const POST = async (request: Request) => {
   const { recipeId } = await request.json();
   try {
     await connectDB();
     const sessionUser = await getSessionUser();
+    console.log("Session User:", sessionUser);
     if (!sessionUser || !sessionUser.userId) {
       return new Response("User Id is required", { status: 401 });
     }

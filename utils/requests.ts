@@ -101,6 +101,22 @@ async function fetchUserAndRecipesData(userId: string) {
     return { user: null, recipes: [] };
   }
 }
+// async function fetchSavedRecipes() {
+//   try {
+//     if (!apiDomain) {
+//       return [];
+//     }
+//     const res = await fetch(`${apiDomain}/saved`,{method:'get'});
+//     if (!res.ok) {
+//       throw new Error("Failed to Fetch saved recipes data.");
+//     }
+//     const data = await res.json();
+//     return data;
+//   } catch (error) {
+//     console.log(error);
+//     return [];
+//   }
+// }
 export {
   fetchRecipes,
   fetchRecipe,
@@ -108,4 +124,5 @@ export {
   fetchPopularRecipes,
   fetchRecipesByTag,
   fetchUserAndRecipesData,
+  // fetchSavedRecipes,
 };
