@@ -3,6 +3,9 @@ const nextConfig = {
   typescript: {
     ignoreDuringBuilds: true,
   },
+  experimental: {
+    missingSuspenseWithCSRBailout: true,
+  },
   eslint: {
     ignoreDuringBuilds: true,
   },
