@@ -83,6 +83,23 @@ async function fetchRecipesByTag(tag: string) {
     return [];
   }
 }
+async function fetchVeganRecipes() {
+  try {
+    if (!apiDomain) {
+      return [];
+    }
+    const res = await fetch(`${apiDomain}/recipes/vegan`, {
+      cache: "no-cache",
+    });
+    if (!res.ok) {
+      throw new Error("Failed to Fetch Recipes by tag.");
+    }
+    return res.json();
+  } catch (error) {
+    console.log(error);
+    return [];
+  }
+}
 
 async function fetchUserAndRecipesData(userId: string) {
   try {
@@ -124,5 +141,6 @@ export {
   fetchPopularRecipes,
   fetchRecipesByTag,
   fetchUserAndRecipesData,
+  fetchVeganRecipes,
   // fetchSavedRecipes,
 };

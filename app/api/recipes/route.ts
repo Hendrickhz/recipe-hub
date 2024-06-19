@@ -30,26 +30,46 @@ export const GET = async (request: Request) => {
     const url = new URL(request.url);
     const recent = url.searchParams.get("recent");
     const course = url.searchParams.get("course");
-    let recipes;
-    let query;
+
+    const pageParam = url.searchParams.get("page");
+    const pageSizeParam = url.searchParams.get("pageSize");
+    
+    const page = pageParam ? parseInt(pageParam, 10) : 1;
+    const pageSize = pageSizeParam ? parseInt(pageSizeParam, 10) : 6;
+    
+    if (isNaN(page) || page <= 0) {
+      throw new Error("Invalid page parameter");
+    }
+    if (isNaN(pageSize) || pageSize <= 0) {
+      throw new Error("Invalid pageSize parameter");
+    }
+    
+    const skip = (page - 1) * pageSize;
+    let query = {};
+
     if (course && course !== "All") {
-      if (course == "Lunch" || course == "Dinner") {
+      if (course === "Lunch" || course === "Dinner") {
         query = { course: "Lunch, Dinner" };
       } else {
         query = { course: course };
       }
     }
+
+    const totalRecipes = await Recipe.countDocuments(query);
+    let recipes;
+
     if (recent) {
       recipes = await Recipe.find().sort({ createdAt: -1 }).limit(3);
-    } else if (query) {
-      recipes = await Recipe.find(query);
     } else {
-      recipes = await Recipe.find();
+      recipes = await Recipe.find(query).skip(skip).limit(pageSize);
     }
-    if (!recipes) {
+
+    if (!recipes.length) {
       return new Response("No Recipes Found", { status: 404 });
     }
-    return new Response(JSON.stringify(recipes), { status: 200 });
+
+    const data = { total: totalRecipes, recipes };
+    return new Response(JSON.stringify(data), { status: 200 });
   } catch (error) {
     console.log(error);
     return new Response("Something went wrong.", { status: 500 });

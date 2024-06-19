@@ -1,5 +1,6 @@
 "use client";
 import NoRecipesAvailable from "@/components/NoRecipesAvailable";
+import Pagination from "@/components/Pagination";
 import RecipeCard from "@/components/RecipeCard";
 import RecipeCardSkeleton from "@/components/RecipeCardSkeleton";
 import { Recipe } from "@/interfaces";
@@ -14,15 +15,27 @@ const RecipePage = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const course = searchParams.get("course");
-
+  //pagination
+  const [page, setPage] = useState(1);
+  const [pageSize, setPageSize] = useState(6);
+  const [totalItems, setTotalItems] = useState(0);
+  const handlePageChange = (newPage: number) => {
+    setPage(newPage);
+  };
+  console.log(totalItems)
   useEffect(() => {
     const fetchRecipes = async () => {
       setLoading(true);
       try {
-        const res = await fetch(`/api/recipes?course=${course || "All"}`);
+        const res = await fetch(
+          `/api/recipes?course=${
+            course || "All"
+          }&page=${page}&pageSize=${pageSize}`
+        );
         if (res.status === 200) {
           const data = await res.json();
-          setRecipes(data);
+          setRecipes(data.recipes);
+          setTotalItems(data.total);
         }
       } catch (error) {
         console.error(error);
@@ -31,9 +44,10 @@ const RecipePage = () => {
       }
     };
     fetchRecipes();
-  }, [course]);
+  }, [course, page, pageSize]);
 
   const handleCourseChange = (course: string) => {
+    setPage(1);
     router.push(`/recipes?course=${course}`);
   };
 
@@ -87,7 +101,7 @@ const RecipePage = () => {
           >
             Dinner
           </Button>
-        
+
           <Button
             colorScheme="orange"
             variant={course === "Snack" ? "solid" : "outline"}
@@ -108,11 +122,20 @@ const RecipePage = () => {
       ) : (
         <>
           {recipes.length > 0 ? (
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pb-6">
-              {recipes.map((recipe: Recipe) => (
-                <RecipeCard key={recipe._id} recipe={recipe} />
-              ))}
-            </div>
+            <Box>
+              <Text fontSize={'larger'} fontWeight={700} mb={3}  >Total Recipes - {totalItems}</Text>
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pb-6">
+                {recipes.map((recipe: Recipe) => (
+                  <RecipeCard key={recipe._id} recipe={recipe} />
+                ))}
+              </div>
+              <Pagination
+                page={page}
+                pageSize={pageSize}
+                totalItems={totalItems}
+                handlePageChange={handlePageChange}
+              />
+            </Box>
           ) : (
             <NoRecipesAvailable />
           )}

@@ -33,7 +33,8 @@ const RecentRecipesSection = async () => {
   //   };
   //   fetchRecentRecipes();
   // }, []);
-  const recentRecipes = await fetchRecentRecipes();
+  const data = await fetchRecentRecipes();
+  const recentRecipes= data.recipes;
 
   return (
     <Box
