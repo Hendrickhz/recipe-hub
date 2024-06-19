@@ -61,8 +61,8 @@ const validationSchema = Yup.object().shape({
   tags: Yup.string().required("Tag is required"),
   description: Yup.string().required("Description is required"),
   servings: Yup.number().min(1).required("Servings are required"),
-  prepTime: Yup.number().min(1).required("Preparation time is required"),
-  cookTime: Yup.number().min(1).required("Cooking time is required"),
+  prepTime: Yup.number().min(0).required("Preparation time is required"),
+  cookTime: Yup.number().min(0).required("Cooking time is required"),
   cuisine: Yup.string().required("Cuisine is required"),
   course: Yup.string().required("Course is required"),
   equipment: Yup.string().required("Equipment is required"),
@@ -162,8 +162,6 @@ const RecipeCreateForm = () => {
     if (data.detailImage && data.detailImage.length > 0) {
       formData.append("detailImage", data.detailImage[0]);
     }
-
-    // Append optional fields
     if (data.notes) {
       formData.append("notes", data.notes);
     }
@@ -291,7 +289,7 @@ const RecipeCreateForm = () => {
                 control={control}
                 render={({ field }) => (
                   <NumberInput
-                    min={1}
+                    min={0}
                     {...field}
                     onChange={(val) => setValue("prepTime", parseInt(val))}
                   >
@@ -315,7 +313,7 @@ const RecipeCreateForm = () => {
                 control={control}
                 render={({ field }) => (
                   <NumberInput
-                    min={1}
+                    min={0}
                     {...field}
                     onChange={(val) => setValue("cookTime", parseInt(val))}
                   >

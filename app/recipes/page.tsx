@@ -75,7 +75,7 @@ const RecipePage = () => {
         <Flex gap={6} flexWrap={"wrap"} justifyContent={"center"} mb={12}>
           <Button
             colorScheme="orange"
-            variant={course === "All" ? "solid" : "outline"}
+            variant={course === "All" || course ==null? "solid" : "outline"}
             onClick={() => handleCourseChange("All")}
           >
             All
@@ -114,7 +114,7 @@ const RecipePage = () => {
 
       {/* Recipes Display */}
       {loading ? (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 pb-12">
           {[0, 1, 2].map((i) => (
             <RecipeCardSkeleton key={i} />
           ))}

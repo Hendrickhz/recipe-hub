@@ -7,7 +7,7 @@ import { HiOutlineArrowSmLeft } from "react-icons/hi";
 const BackButton = () => {
   const router = useRouter();
   return (
-    <Box className=" w-full  sticky top-[90px]  bg-orange-50  py-2">
+    <Box className=" w-full z-10  sticky top-[90px]  bg-orange-50  py-2">
       <IconButton
         aria-label="back-arrow"
         icon={<HiOutlineArrowSmLeft size={26} />}

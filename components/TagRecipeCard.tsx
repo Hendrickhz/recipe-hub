@@ -12,13 +12,15 @@ const TagRecipeCard = ({ recipe }: { recipe: IRecipe }) => {
       <Heading fontFamily={"serif"} as={"h3"}>
         <Link href={`/recipes/${recipe._id}`}>{recipe.title}</Link>
       </Heading>
-      <Image
-        w={"full"}
-        maxH={{ base: "300px", md: "500px" }}
-        alt={recipe.title}
-        src={recipe.thumbnailUrl}
-        objectFit={"cover"}
-      />
+      <Link href={`/recipes/${recipe._id}`}>
+        <Image
+          w={"full"}
+          maxH={{ base: "300px", md: "500px" }}
+          alt={recipe.title}
+          src={recipe.thumbnailUrl}
+          objectFit={"cover"}
+        />
+      </Link>
       <Text>{recipe.description.slice(0, 340)}...</Text>
     </Box>
   );

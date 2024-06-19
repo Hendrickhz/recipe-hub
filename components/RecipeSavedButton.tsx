@@ -59,7 +59,7 @@ const RecipeSavedButton = ({ recipeId }: { recipeId: string }) => {
   if (loading) {
     return (
       <Box>
-        <Spinner/>
+        <Spinner color="orange.600" size={'sm'}/>
       </Box>
     );
   }

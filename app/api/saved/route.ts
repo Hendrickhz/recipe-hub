@@ -2,7 +2,7 @@ import connectDB from "@/config/database";
 import Recipe from "@/models/Recipe";
 import User from "@/models/User";
 import { getSessionUser } from "@/utils/getSessionUser";
-
+export const dynamic = "force-dynamic";
 // GET /api/saved
 // export const GET = async (request: Request) => {
 //   try {

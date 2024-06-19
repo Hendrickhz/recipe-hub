@@ -1,4 +1,4 @@
-import { Button, Flex } from "@chakra-ui/react";
+import { Button, Flex, Text } from "@chakra-ui/react";
 import React from "react";
 interface PaginationProp {
   page: number;
@@ -24,9 +24,9 @@ const Pagination = ({
       >
         Previous
       </Button>
-      <span className="mx-2">
+      <Text className="mx-2 text-orange-800">
         Page {page} of {totalPages}
-      </span>
+      </Text>
       <Button
         colorScheme="orange"
         variant={"outline"}

@@ -2,7 +2,6 @@
 import {
   Box,
   Flex,
-  Heading,
   Menu,
   MenuButton,
   MenuList,
@@ -12,8 +11,8 @@ import {
   Avatar,
   Center,
   Divider,
+  SkeletonCircle,
 } from "@chakra-ui/react";
-import { ChevronDownIcon } from "@chakra-ui/icons";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
@@ -28,7 +27,7 @@ import {
   ClientSafeProvider,
 } from "next-auth/react";
 const Navbar = () => {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   const pathname = usePathname();
   const [providers, setProviders] = useState<Record<
     string,
@@ -56,7 +55,6 @@ const Navbar = () => {
               <Link
                 className=" ml-2 md:text-xl  text-md font-serif font-semibold text-orange-800"
                 href="/"
-                
               >
                 Recipe Hub
               </Link>
@@ -94,50 +92,57 @@ const Navbar = () => {
             <Spacer />
 
             {/* Right side: Profile dropdown menu and Sign-in button */}
-            <Flex align="center" className="space-x-4">
-              {session ? (
-                <Menu>
-                  <Avatar
-                    as={MenuButton}
-                    size={{ base: "sm", md: "md" }}
-                    name={session?.user?.name || "user "}
-                    src={session?.user?.image || profileDefault}
-                    className="mr-2"
-                  />
 
-                  <MenuList>
-                    <MenuItem>
-                      <Link href="/profile">Profile</Link>
-                    </MenuItem>
-                    <MenuItem>
-                      <Link href="/saved">Saved</Link>
-                    </MenuItem>
-                    <MenuItem>
-                      <Link href="#" onClick={() => signOut()}>
-                        Logout
-                      </Link>
-                    </MenuItem>
-                  </MenuList>
-                </Menu>
+            <>
+              {status == "loading" ? (
+                <SkeletonCircle size={"12"} />
               ) : (
-                <>
-                  {providers &&
-                    Object.values(providers).map((provider, index) => (
-                      <Button
-                        key={index}
-                        onClick={() => signIn(provider.id)}
-                        colorScheme="orange"
-                        leftIcon={<FaGoogle />}
+                <Flex align="center" className="space-x-4">
+                  {session ? (
+                    <Menu>
+                      <Avatar
+                        as={MenuButton}
                         size={{ base: "sm", md: "md" }}
-                        px={{ base: 2, md: 4 }}
-                        py={{ base: 1, md: 2 }}
-                      >
-                        Sign In
-                      </Button>
-                    ))}
-                </>
+                        name={session?.user?.name || "user "}
+                        src={session?.user?.image || profileDefault}
+                        className="mr-2"
+                      />
+
+                      <MenuList>
+                        <MenuItem>
+                          <Link href="/profile">Profile</Link>
+                        </MenuItem>
+                        <MenuItem>
+                          <Link href="/saved">Saved</Link>
+                        </MenuItem>
+                        <MenuItem>
+                          <Link href="#" onClick={() => signOut()}>
+                            Logout
+                          </Link>
+                        </MenuItem>
+                      </MenuList>
+                    </Menu>
+                  ) : (
+                    <>
+                      {providers &&
+                        Object.values(providers).map((provider, index) => (
+                          <Button
+                            key={index}
+                            onClick={() => signIn(provider.id)}
+                            colorScheme="orange"
+                            leftIcon={<FaGoogle />}
+                            size={{ base: "sm", md: "md" }}
+                            px={{ base: 2, md: 4 }}
+                            py={{ base: 1, md: 2 }}
+                          >
+                            Sign In
+                          </Button>
+                        ))}
+                    </>
+                  )}
+                </Flex>
               )}
-            </Flex>
+            </>
           </Flex>
         </Box>
       </div>

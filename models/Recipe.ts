@@ -70,8 +70,8 @@ const RecipeSchema: Schema = new Schema(
     ingredients: { type: [IngredientSchema], required: true },
     instructions: { type: [InstructionSchema], required: true },
     notes: { type: String, required: true },
-    thumbnailUrl: { type: String, required: true }, // URL for thumbnail image
-    detailImageUrl: { type: String, required: true }, //
+    thumbnailUrl: { type: String, required: true },
+    detailImageUrl: { type: String, required: true },
     author: { type: Schema.Types.ObjectId, ref: "User", required: true },
   },
   {
