@@ -22,7 +22,7 @@ const VeganRecipesSection = () => {
   useEffect(() => {
     const fetchVeganRecipes = async () => {
       try {
-        const res = await fetch(`/api/tags/vegan`);
+        const res = await fetch(`/api/recipes/vegan`);
         if (res.status == 200) {
           const data = await res.json();
           setVeganRecipes(data);
