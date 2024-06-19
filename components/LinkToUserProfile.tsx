@@ -10,14 +10,19 @@ const LinkToUserProfile = ({
   id: string;
   username: string;
 }) => {
-  const { data: session } = useSession();
-  const isLoggedInUser = id === session?.user?.id;
-  const hrefLink= isLoggedInUser ? '/profile' : `/users/${id}`
-  console.log(session)
+  // const { data: session } = useSession();
+  let hrefLink;
+  // if(!session || !session.user){
+  //   hrefLink= `/users/${id}`;
+  // }else{
+  //   const isLoggedInUser = id == session?.user?.id;
+  // hrefLink= isLoggedInUser ? '/profile' : `/users/${id}`
+  // }
+  // console.log(session)
   return (
     <Text fontFamily={"serif"} fontSize={"large"}>
       Shared by{" "}
-      <Link fontWeight={"700"} href={hrefLink}>
+      <Link fontWeight={"700"} href={`/users/${id}`}>
         {username}
       </Link>
     </Text>

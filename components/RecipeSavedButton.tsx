@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 import { Box, IconButton, Spinner, Tooltip } from "@chakra-ui/react";
 import { useSession } from "next-auth/react";

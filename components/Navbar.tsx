@@ -104,7 +104,7 @@ const Navbar = () => {
                         as={MenuButton}
                         size={{ base: "sm", md: "md" }}
                         name={session?.user?.name || "user "}
-                        src={session?.user?.image || profileDefault}
+                        src={session?.user?.image || "https://www.tenforums.com/attachments/user-accounts-family-safety/322690d1615743307-user-account-image-log-user.png"}
                         className="mr-2"
                       />
 

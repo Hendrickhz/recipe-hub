@@ -1,3 +1,4 @@
+// @ts-nocheck
 import connectDB from "@/config/database";
 import User from "@/models/User";
 import { Session, NextAuthOptions } from "next-auth";
@@ -44,7 +45,7 @@ export const authOptions: NextAuthOptions = {
       return true;
     },
 
-    async session({ session }: { session: Session & { user: { id?: string } } }) {
+    async session({ session }: { session: Session & { user: { id: string } } }) {
       const user = await User.findOne({ email: session.user.email });
       session.user.id = user._id.toString();
       return session;

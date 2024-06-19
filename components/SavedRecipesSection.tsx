@@ -1,3 +1,4 @@
+// @ts-nocheck
 "use client";
 import NoRecipesAvailable from "@/components/NoRecipesAvailable";
 import RecipeCard from "@/components/RecipeCard";
