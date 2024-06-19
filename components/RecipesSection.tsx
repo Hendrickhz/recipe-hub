@@ -21,7 +21,10 @@ const RecipesSection = () => {
   const [pageSize, setPageSize] = useState(6);
   const [totalItems, setTotalItems] = useState(0);
   const handlePageChange = (newPage: number) => {
-    setPage(newPage);
+    const totalPages = Math.ceil(totalItems / pageSize);
+    if (newPage >= 1 && newPage <= totalPages) {
+      setPage(newPage);
+    }
   };
   console.log(totalItems);
   useEffect(() => {
@@ -57,9 +60,7 @@ const RecipesSection = () => {
         <Flex gap={6} flexWrap="wrap" justifyContent="center" mb={12}>
           <Button
             colorScheme="orange"
-            variant={
-              course === "" || course === "All" ? "solid" : "outline"
-            }
+            variant={course === "" || course === "All" ? "solid" : "outline"}
             onClick={() => handleCourseChange("All")}
           >
             All

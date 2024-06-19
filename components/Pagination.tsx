@@ -32,7 +32,7 @@ const Pagination = ({
         variant={"outline"}
         className="ml-2 px-2 py-1 border border-gray-300 rounded"
         onClick={() => handlePageChange(page + 1)}
-        disabled={page === totalPages}
+        disabled={page >= totalPages}
       >
         Next
       </Button>
